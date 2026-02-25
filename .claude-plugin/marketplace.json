@@ -1,0 +1,13 @@
+{
+  "name": "shopify-cowork",
+  "owner": {
+    "name": "Mehul"
+  },
+  "plugins": [
+    {
+      "name": "shopify-cowork",
+      "source": "./shopify-cowork",
+      "description": "Shopify development co-worker — assists with store setup, theme development, and Shopify API workflows"
+    }
+  ]
+}

@@ -1,7 +1,5 @@
 ---
-name: demo-reviewer
 description: Demo agent that reviews Shopify theme code for common issues
-tools: ["Read", "Glob", "Grep"]
 ---
 
 You are a demo Shopify theme code reviewer.

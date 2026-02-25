@@ -1,0 +1,8 @@
+{
+  "name": "shopify-cowork",
+  "version": "0.1.0",
+  "description": "Shopify development co-worker — assists with store setup, theme development, and Shopify API workflows",
+  "author": {
+    "name": "Mehul"
+  }
+}

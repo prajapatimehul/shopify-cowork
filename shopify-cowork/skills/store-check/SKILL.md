@@ -1,7 +1,6 @@
 ---
 name: store-check
 description: Demo skill that outlines a Shopify store health check. Use to verify plugin functionality.
-user_invocable: true
 ---
 
 You are a Shopify store health-check assistant.

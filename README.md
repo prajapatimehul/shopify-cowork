@@ -1,50 +1,48 @@
 # shopify-cowork
 
-A demo Claude Code plugin for Shopify development workflows.
+A Claude Code plugin marketplace for Shopify development workflows.
 
 ## Installation
 
-Add this marketplace and install:
-
 ```bash
-/plugin marketplace add mehul-portfolio/shopify-cowork
-/plugin install shopify-cowork@mehul-portfolio/shopify-cowork
+/plugin marketplace add prajapatimehul/shopify-cowork
+/plugin install shopify-cowork@prajapatimehul/shopify-cowork
 ```
 
-Or test locally:
+## Available Commands
 
-```bash
-claude --plugin-dir ./shopify-cowork
-```
+| Command | Description |
+|---------|-------------|
+| `/shopify-cowork:hello` | Verify plugin is installed |
 
 ## Available Skills
 
-| Skill | Command | Description |
-|-------|---------|-------------|
-| hello | `/shopify-cowork:hello` | Verify plugin is installed |
-| store-check | `/shopify-cowork:store-check` | Demo Shopify store health check |
+| Skill | Description |
+|-------|-------------|
+| `hello` | Greeting / install verification |
+| `store-check` | Demo Shopify store health check |
 
 ## Available Agents
 
 | Agent | Description |
 |-------|-------------|
-| demo-reviewer | Demo Shopify theme code reviewer |
+| `demo-reviewer` | Demo Shopify theme code reviewer |
 
-## Plugin Structure
+## Repo Structure
 
 ```
-shopify-cowork/
+.claude-plugin/
+└── marketplace.json            # Marketplace manifest
+shopify-cowork/                 # Plugin directory
 ├── .claude-plugin/
-│   └── plugin.json         # Plugin manifest
+│   └── plugin.json             # Plugin manifest
+├── commands/
+│   └── hello.md                # /hello command
 ├── skills/
-│   ├── hello/SKILL.md      # Greeting / install verification
-│   └── store-check/SKILL.md # Demo store health check
-├── agents/
-│   └── demo-reviewer.md    # Demo code review agent
-├── hooks/
-│   └── hooks.json          # Event hooks (empty for demo)
-├── settings.json           # Default settings
-└── README.md
+│   ├── hello/SKILL.md          # Greeting skill
+│   └── store-check/SKILL.md   # Store health check skill
+└── agents/
+    └── demo-reviewer.md        # Code review agent
 ```
 
 ## License
