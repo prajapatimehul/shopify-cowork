@@ -1,0 +1,11 @@
+{
+  "name": "shopify-cowork",
+  "description": "Shopify development co-worker plugin for Claude Code — assists with store setup, theme development, and Shopify API workflows",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mehul"
+  },
+  "homepage": "https://github.com/mehul-portfolio/shopify-cowork",
+  "repository": "https://github.com/mehul-portfolio/shopify-cowork",
+  "license": "MIT"
+}
