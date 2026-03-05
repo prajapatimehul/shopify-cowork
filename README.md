@@ -21,6 +21,7 @@ A Claude Code plugin marketplace for Shopify development workflows.
 |-------|-------------|
 | `hello` | Greeting / install verification |
 | `store-check` | Demo Shopify store health check |
+| `seo-audit` | SEO audit for any Shopify store — no auth required |
 
 ## Available Agents
 
@@ -40,7 +41,8 @@ shopify-cowork/                 # Plugin directory
 │   └── hello.md                # /hello command
 ├── skills/
 │   ├── hello/SKILL.md          # Greeting skill
-│   └── store-check/SKILL.md   # Store health check skill
+│   ├── store-check/SKILL.md    # Store health check skill
+│   └── seo-audit/SKILL.md      # SEO audit (any public Shopify store)
 └── agents/
     └── demo-reviewer.md        # Code review agent
 ```
