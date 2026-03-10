@@ -1,7 +1,7 @@
 {
   "name": "shopify-cowork",
   "version": "1.0.0",
-  "description": "AI co-pilot for Indian e-commerce — store analysis (SEO + GEO + AEO), reconciliation, ads, inventory across Shopify, Amazon, and Myntra",
+  "description": "AI co-pilot for e-commerce — store analysis (SEO + GEO + AEO), reconciliation, ads, inventory across Shopify, Amazon, and marketplaces",
   "author": {
     "name": "Mehul"
   }

@@ -1,6 +1,6 @@
 # shopify-cowork
 
-AI co-pilot for Indian e-commerce brands running Shopify, Amazon, and Myntra. Built as a Claude Code plugin.
+AI co-pilot for e-commerce brands running Shopify and multi-channel operations. Built as a Claude Code plugin.
 
 ## Installation
 
@@ -41,7 +41,7 @@ Outputs a 100-point Store Readiness Score with category breakdown, prioritized T
 
 ## Roadmap
 
-Skills planned for multi-channel Indian e-commerce — Shopify D2C, Amazon India, Myntra.
+Skills planned for multi-channel e-commerce — Shopify D2C, Amazon, and marketplace operations.
 
 ### Store Fixer
 Takes issues found by the analyzer and fixes them via Shopify Admin API. Schema injection, meta tag updates, robots.txt patches, content improvements — applied directly to the store with approval gates.
@@ -50,7 +50,7 @@ Takes issues found by the analyzer and fixes them via Shopify Admin API. Schema 
 Single-command daily briefing pulling from Shopify, Amazon SP-API, and Google Ads MCP servers. Yesterday's GMV by channel, run rate vs target, contribution margins, stockout alerts, ROAS breakdown, cash position.
 
 ### Finance & Reconciliation (`/finance:reconciliation`, `/finance:journal-entry`)
-Amazon settlement analysis (commission slab verification, TCS tracking, return credit recovery), Myntra payout reconciliation, Razorpay D2C matching. Auto-generates double-entry journal entries with supporting schedules. GST compilation across multi-state registrations.
+Marketplace settlement analysis (commission verification, tax tracking, return credit recovery), payment gateway reconciliation. Auto-generates double-entry journal entries with supporting schedules.
 
 ### Ads Management (`/ads:audit`, `/growth:launch`)
 Google Ads and Amazon PPC audit — wasted spend detection, negative keyword harvesting, bid optimization, creative fatigue alerts. Campaign creation from Shopify collections with human approval before spend.
@@ -59,21 +59,20 @@ Google Ads and Amazon PPC audit — wasted spend detection, negative keyword har
 30-day demand forecast using cross-channel sales velocity. Reorder suggestions per channel, stockout prediction, dead stock identification, FBA vs self-fulfilled routing decisions.
 
 ### Review Monitor (`/reviews:scan`)
-Cross-channel review scanning (Amazon, Shopify, Myntra). Auto-categorization by issue type, 1-star alerts, recurring complaint detection, competitor mention tracking.
+Cross-channel review scanning. Auto-categorization by issue type, 1-star alerts, recurring complaint detection, competitor mention tracking.
 
 ### Catalog Operations
-Bulk product description generation optimized per channel (Shopify SEO copy, Amazon bullet points, Myntra attributes). Product feed optimization for Google Merchant Center approval.
+Bulk product description generation optimized per channel (Shopify SEO copy, Amazon bullet points, marketplace attributes). Product feed optimization for Google Merchant Center approval.
 
 ---
 
 ## The Problem This Solves
 
-Running multi-channel e-commerce in India means:
+Running multi-channel e-commerce means:
 
-- **3 marketplaces** with 3 different fee structures, settlement cycles, and commission slabs
-- **2-5% of GMV silently leaking** through incorrect deductions, unclaimed TCS, and missed return credits
-- **GST across 12+ states** wherever Amazon FBA has a warehouse
-- **30% return rates** in fashion categories
+- **Multiple marketplaces** with different fee structures, settlement cycles, and commission slabs
+- **2-5% of GMV silently leaking** through incorrect deductions, unclaimed taxes, and missed return credits
+- **High return rates** eating into margins
 - **45 minutes every morning** compiling data from 6 different dashboards
 
 One plugin. One terminal. Real money recovered.
@@ -88,8 +87,6 @@ One plugin. One terminal. Real money recovered.
 | **Desktop (non-technical team)** | Claude Cowork with finance and marketing plugins |
 | **Bulk content** | ChatGPT + GPT for Sheets |
 | **Automation glue** | n8n (self-hosted) |
-| **Inventory sync** | Unicommerce |
-| **Payments** | Razorpay MCP |
 
 ---
 
