@@ -1,7 +1,7 @@
 {
   "name": "shopify-cowork",
-  "version": "0.2.0",
-  "description": "Shopify commerce co-worker — store analysis (SEO + GEO + AEO), theme development, and Shopify API workflows",
+  "version": "1.0.0",
+  "description": "AI co-pilot for Indian e-commerce — store analysis (SEO + GEO + AEO), reconciliation, ads, inventory across Shopify, Amazon, and Myntra",
   "author": {
     "name": "Mehul"
   }
