@@ -1,6 +1,6 @@
 # shopify-cowork
 
-AI co-pilot for e-commerce brands running Shopify and multi-channel operations. Built as a Claude Code plugin.
+AI co-pilot for Shopify stores. Built as a Claude Code plugin.
 
 ## Installation
 
@@ -39,54 +39,16 @@ Outputs a 100-point Store Readiness Score with category breakdown, prioritized T
 
 ---
 
-## Roadmap
+## Coming Soon
 
-Skills planned for multi-channel e-commerce — Shopify D2C, Amazon, and marketplace operations.
-
-### Store Fixer
-Takes issues found by the analyzer and fixes them via Shopify Admin API. Schema injection, meta tag updates, robots.txt patches, content improvements — applied directly to the store with approval gates.
-
-### Growth Briefing (`/growth:morning`, `/growth:daily-close`)
-Single-command daily briefing pulling from Shopify, Amazon SP-API, and Google Ads MCP servers. Yesterday's GMV by channel, run rate vs target, contribution margins, stockout alerts, ROAS breakdown, cash position.
-
-### Finance & Reconciliation (`/finance:reconciliation`, `/finance:journal-entry`)
-Marketplace settlement analysis (commission verification, tax tracking, return credit recovery), payment gateway reconciliation. Auto-generates double-entry journal entries with supporting schedules.
-
-### Ads Management (`/ads:audit`, `/growth:launch`)
-Google Ads and Amazon PPC audit — wasted spend detection, negative keyword harvesting, bid optimization, creative fatigue alerts. Campaign creation from Shopify collections with human approval before spend.
-
-### Inventory Intelligence (`/inventory:forecast`)
-30-day demand forecast using cross-channel sales velocity. Reorder suggestions per channel, stockout prediction, dead stock identification, FBA vs self-fulfilled routing decisions.
-
-### Review Monitor (`/reviews:scan`)
-Cross-channel review scanning. Auto-categorization by issue type, 1-star alerts, recurring complaint detection, competitor mention tracking.
-
-### Catalog Operations
-Bulk product description generation optimized per channel (Shopify SEO copy, Amazon bullet points, marketplace attributes). Product feed optimization for Google Merchant Center approval.
-
----
-
-## The Problem This Solves
-
-Running multi-channel e-commerce means:
-
-- **Multiple marketplaces** with different fee structures, settlement cycles, and commission slabs
-- **2-5% of GMV silently leaking** through incorrect deductions, unclaimed taxes, and missed return credits
-- **High return rates** eating into margins
-- **45 minutes every morning** compiling data from 6 different dashboards
-
-One plugin. One terminal. Real money recovered.
-
----
-
-## Stack
-
-| Layer | Tools |
-|-------|-------|
-| **Terminal (technical team)** | Claude Code + Shopify Admin MCP + Amazon SP-API MCP + Google Ads MCP |
-| **Desktop (non-technical team)** | Claude Cowork with finance and marketing plugins |
-| **Bulk content** | ChatGPT + GPT for Sheets |
-| **Automation glue** | n8n (self-hosted) |
+| Skill | What It Does | Status |
+|-------|-------------|--------|
+| **Store Fixer** | Takes analyzer findings and fixes them via Shopify Admin API — schema injection, meta tags, robots.txt, content | Up next |
+| **Growth Briefing** | One-command daily briefing — GMV, ad ROAS, stockout alerts, cash position | Planned |
+| **Catalog Operations** | Bulk product description generation, SEO copy, product feed optimization | Planned |
+| **Ads Audit** | Google Ads wasted spend detection, negative keywords, bid optimization, creative fatigue | Planned |
+| **Review Monitor** | Review scanning, 1-star alerts, recurring complaint detection | Planned |
+| **Inventory Forecast** | 30-day demand forecast, reorder suggestions, stockout prediction, dead stock ID | Planned |
 
 ---
 
