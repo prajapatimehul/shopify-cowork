@@ -1,0 +1,47 @@
+{
+  "skill_name": "seo-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this Shopify store and tell me the top SEO fixes: example.com",
+      "expected_output": "A full Shopify SEO audit with exact counts, clear scope labels, and prioritized actions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Review this Shopify SEO audit report for themancompany.com and tell me what is real, what is overstated, and what matters most.",
+      "expected_output": "A report-review response that verifies claims against store data and separates supported issues from overstatement.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Check whether this Shopify store has weak collection SEO, thin product pages, and duplicate product titles: example.com",
+      "expected_output": "A focused Shopify audit emphasizing collection content, product content, and title duplication with exact counts where possible.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Give me a technical SEO audit for this Shopify domain and prioritize what the client should fix first: example.com",
+      "expected_output": "A client-facing technical Shopify SEO audit that uses evidence-backed priorities rather than arbitrary severity labels.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Audit this Shopify store and tell me if public endpoint limitations mean it should only be a partial audit: example.com",
+      "expected_output": "A Shopify audit that explicitly classifies itself as full or partial and does not invent exact catalog-wide claims when evidence is incomplete.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Review this Shopify SEO audit claim: the store has no meta descriptions because og:description is missing on product pages.",
+      "expected_output": "A review that distinguishes standard meta descriptions from Open Graph tags and downgrades the claim if only social tags are missing.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Check this Shopify SEO audit and tell me whether missing product tags really deserves to be the top issue.",
+      "expected_output": "A review that classifies product tags as secondary merchandising or internal-search hygiene unless stronger public evidence shows a larger SEO problem.",
+      "files": []
+    }
+  ]
+}

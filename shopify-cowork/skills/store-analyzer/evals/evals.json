@@ -1,0 +1,41 @@
+{
+  "skill_name": "store-analyzer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this Shopify store and tell me the top issues: example.com",
+      "expected_output": "A full SEO + GEO + AEO audit with exact counts, scope labels, AI bot access check, and prioritized actions across all dimensions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Check if this Shopify store is visible to AI search engines like ChatGPT and Perplexity: example.com",
+      "expected_output": "A GEO-focused audit checking robots.txt AI bot rules, llms.txt, entity signals, content extractability, and citation-worthiness.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Review this Shopify SEO audit report and tell me what is real, what is overstated, and what is missing: themancompany.com",
+      "expected_output": "A report-review that verifies claims, classifies by importance, and flags missing GEO/AEO dimensions if the original audit did not cover them.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Check whether this Shopify store can win featured snippets and answer box positions: example.com",
+      "expected_output": "An AEO-focused audit checking FAQ schema, question headings, answer paragraph format, comparison tables, and snippet readiness.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Run a full store analysis on jhumka-8052.myshopify.com",
+      "expected_output": "Complete SEO + GEO + AEO audit with catalog-wide product data, sampled HTML analysis, Store Readiness Score, and Top 5 actions.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Is this Shopify store optimized for voice search and AI shopping assistants?",
+      "expected_output": "Combined GEO + AEO audit focusing on voice readiness, AI bot access, product schema completeness, and content extractability.",
+      "files": []
+    }
+  ]
+}
