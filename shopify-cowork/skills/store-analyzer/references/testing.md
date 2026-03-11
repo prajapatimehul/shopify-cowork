@@ -71,7 +71,6 @@ A good audit should:
 - Check for FAQ/HowTo schema
 - Check for question-based headings and answer format
 - Prioritize by business impact, not by how dramatic findings sound
-- Include a Store Readiness Score with category breakdown
 - Include Top 5 Actions
 - Include sample fixes using real products/collections
 

@@ -6,7 +6,6 @@
 2. Collection data quality
 3. Pricing analysis
 4. Tag analysis
-5. Data quality scoring
 
 All checks use data from public `/products.json` and `/collections.json` endpoints.
 
@@ -216,28 +215,3 @@ Every tag creates URLs like `/collections/{collection-handle}/{tag}`. These are 
 - **Threshold:** Zero tolerance
 - **Impact:** Creates separate filter pages per variant, multiplying duplicate content.
 
----
-
-## 5. Data Quality Scoring
-
-### Per-Product Health Score (0-100)
-
-| Check | Weight |
-|---|---|
-| Has description | 20 |
-| Description depth (word count tiers) | 15 |
-| Has images (0 = 0pts, 1-2 = 10pts, 3+ = 15pts) | 15 |
-| Has product_type | 10 |
-| Has valid price (non-zero) | 10 |
-| Has SKU on all variants | 10 |
-| Has tags | 5 |
-| Has vendor | 5 |
-| Description not duplicated | 10 |
-
-### Catalog Health Summary
-
-Report in the audit:
-- Average product health score across catalog
-- Distribution: how many products score < 50, 50-70, 70-90, 90+
-- Worst offenders: list the 5 lowest-scoring products by name
-- Best examples: list 2-3 high-scoring products as reference

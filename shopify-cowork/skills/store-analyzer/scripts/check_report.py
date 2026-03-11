@@ -90,11 +90,6 @@ def check_full(text: str, lowered: str) -> tuple[list[str], list[str]]:
     if evidence_count < 5:
         errors.append(f"expected at least 5 Evidence lines in a full audit, found {evidence_count}")
 
-    # Score labeling
-    if "STORE READINESS SCORE" in text:
-        if "diagnostic benchmark" not in lowered and "not a google score" not in lowered:
-            errors.append("score is present but not labeled as a diagnostic benchmark")
-
     # Scope labels
     if not any(label in text for label in ("Catalog-wide", "Sampled", "Inference")):
         errors.append("no explicit Catalog-wide / Sampled / Inference labels detected")
@@ -135,10 +130,6 @@ def check_focused(text: str, lowered: str) -> tuple[list[str], list[str]]:
     scope_count = len(re.findall(r"^\s*Scope:\s*", text, flags=re.MULTILINE))
     if scope_count < 1:
         errors.append("expected at least 1 Scope line in a focused audit")
-
-    # Score labeling if present
-    if "SCORE" in text and "diagnostic benchmark" not in lowered and "not a google score" not in lowered:
-        warnings.append("score is present but not labeled as a diagnostic benchmark")
 
     return errors, warnings
 

@@ -28,7 +28,7 @@
     {
       "id": 5,
       "prompt": "Run a full store analysis on jhumka-8052.myshopify.com",
-      "expected_output": "Complete SEO + GEO + AEO audit with catalog-wide product data, sampled HTML analysis, Store Readiness Score, and Top 5 actions.",
+      "expected_output": "Complete SEO + GEO + AEO audit with catalog-wide product data, sampled HTML analysis, prioritized findings with proof and fixes, and Top 5 actions.",
       "files": []
     },
     {

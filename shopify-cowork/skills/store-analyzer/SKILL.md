@@ -23,12 +23,10 @@ Use public Shopify data, sampled HTML, and explicit scope labeling. Make the rep
 - Read [references/geo-checks.md](references/geo-checks.md) for AI visibility checks — bot access, entity signals, citation-worthiness.
 - Read [references/aeo-checks.md](references/aeo-checks.md) for answer engine checks — snippets, FAQ schema, voice search, PAA.
 - Read [references/catalog-checks.md](references/catalog-checks.md) for product and collection data quality checks from `/products.json`.
-- Read [references/scoring.md](references/scoring.md) for the unified scoring rubric across all three dimensions.
 - Read [references/troubleshooting.md](references/troubleshooting.md) when endpoints are blocked, incomplete, or conflicting.
 - Use [assets/report-template.md](assets/report-template.md) for the final output shape.
 - Use [references/testing.md](references/testing.md) and [evals/evals.json](evals/evals.json) when improving the skill or checking trigger behavior.
 - If the report is saved to disk, validate with `python scripts/check_report.py --input path/to/report.md --mode full|focused|review` (mode must match the audit type).
-- If structured metrics are saved to JSON, compute the score with `python scripts/score_audit.py --input path/to/metrics.json --pretty`. Missing sections are scored as N/A with a completeness ratio.
 
 ## Critical Rules
 
@@ -40,7 +38,6 @@ Use public Shopify data, sampled HTML, and explicit scope labeling. Make the rep
 - Treat missing server-rendered JSON-LD carefully — apps can inject it client-side.
 - Keep the report easy to scan. A client should understand the top issues in under a minute.
 - Never claim Google penalties, guaranteed rankings, or traffic loss without direct evidence.
-- Frame the score as a "Store Readiness Score" — a diagnostic benchmark, not a grade.
 
 ## Workflow
 
@@ -131,40 +128,24 @@ Run checks from each reference file:
    - Collection data quality (descriptions, product counts, titles)
    - Tag analysis (over-tagging, crawl traps, inconsistencies)
 
-### 6. Score the findings
-
-Use [references/scoring.md](references/scoring.md) to compute the Store Readiness Score across five categories:
-
-| Category | Points | What It Covers |
-|---|---|---|
-| Technical SEO | 20 | Crawlability, speed proxies, canonicals, sitemap |
-| Content & On-Page SEO | 25 | Titles, descriptions, content depth, IA |
-| Structured Data | 20 | Product schema, Organization, BreadcrumbList, reviews |
-| GEO: AI Visibility | 20 | AI bot access, entity clarity, citation-worthiness, extractability |
-| AEO: Answer Readiness | 15 | FAQ/HowTo schema, snippet readiness, voice search, PAA |
-
-### 7. Write the report
+### 6. Write the report
 
 Use [assets/report-template.md](assets/report-template.md).
 
 For a full audit, give the user:
 
-- Executive summary with biggest issue + best quick win
+- Bottom line: biggest issue + best quick win
 - Store snapshot
-- Dimension summaries (SEO / GEO / AEO) with key metrics
-- Prioritized findings with scope and evidence
+- Findings ordered by impact — each with scope, proof, fix, and why it matters
 - Top 5 actions ordered by business impact
 - Sample fixes using real products or collections from the store
-- Store Readiness Score with category breakdown
 
-### 8. Run the quality gate
+### 7. Run the quality gate
 
 Before finalizing:
 
-- Apply the QA checklist from [references/scoring.md](references/scoring.md).
 - Use [references/troubleshooting.md](references/troubleshooting.md) if data quality is partial.
 - If saved to file, run `scripts/check_report.py --input path/to/report.md --mode full|focused|review`.
-- If metrics saved to JSON, run `scripts/score_audit.py --input path/to/metrics.json --pretty`.
 
 ## Audit Review Mode
 
