@@ -2,9 +2,9 @@
 """Lint a generated Store Analysis report for structure and credibility.
 
 Supports three modes via --mode:
-  full    (default) — requires all dimension sections + headings
-  focused           — requires SUMMARY + one dimension section + TOP 3 ACTIONS
-  review            — requires BOTTOM LINE + at least one classification section
+  full    (default) — requires BOTTOM LINE, SNAPSHOT, FINDINGS, SAMPLE FIXES
+  focused           — requires {DIMENSION} AUDIT, BOTTOM LINE, SNAPSHOT, FINDINGS
+  review            — requires BOTTOM LINE + classification sections from the template
 """
 
 from __future__ import annotations
@@ -18,20 +18,17 @@ from pathlib import Path
 # --- Mode-specific required headings ---
 
 FULL_REQUIRED_HEADINGS = [
-    "EXECUTIVE SUMMARY",
-    "STORE SNAPSHOT",
-    "TOP 5 ACTIONS",
-]
-
-FULL_REQUIRED_SECTIONS = [
-    "SEO FINDINGS",
-    "GEO FINDINGS",
-    "AEO FINDINGS",
+    "BOTTOM LINE",
+    "SNAPSHOT",
+    "FINDINGS",
+    "SAMPLE FIXES",
+    "AI-FACING GAPS",
 ]
 
 FOCUSED_REQUIRED_HEADINGS = [
-    "SUMMARY",
-    "TOP 3 ACTIONS",
+    "BOTTOM LINE",
+    "SNAPSHOT",
+    "FINDINGS",
 ]
 
 REVIEW_REQUIRED_HEADINGS = [
@@ -43,7 +40,46 @@ REVIEW_CLASSIFICATION_SECTIONS = [
     "SUPPORTED BUT SECONDARY",
     "REAL BUT OVERSTATED",
     "UNSUPPORTED FROM CURRENT EVIDENCE",
-    "WHAT THE AUDIT MISSED",
+    "MISSING IMPORTANT ISSUES",
+]
+
+LEGACY_REVIEW_HEADINGS = [
+    "UNSUPPORTED",
+    "MISSED",
+]
+
+OLD_FORMAT_HEADINGS = [
+    "EXECUTIVE SUMMARY",
+    "STORE SNAPSHOT",
+    "TOP 5 ACTIONS",
+    "TOP 3 ACTIONS",
+    "TOP ACTIONS",
+    "SEO FINDINGS",
+    "GEO FINDINGS",
+    "AEO FINDINGS",
+    "DIMENSION SUMMARY",
+    "WHAT'S WORKING",
+    "STORE READINESS SCORE",
+    "KEY TAKEAWAY",
+    "STRUCTURED DATA",
+    "TITLES AND SNIPPETS",
+    "CANONICALS AND URL",
+    "ROBOTS.TXT",
+    "SITEMAP",
+    "PRODUCT CONTENT",
+    "COLLECTION CONTENT",
+    "PERFORMANCE PROXIES",
+    "CATALOG DATA QUALITY",
+    "AI BOT ACCESS",
+    "ENTITY CLARITY",
+    "CITATION-WORTHINESS",
+    "CONTENT EXTRACTABILITY",
+    "FAQ SCHEMA",
+    "FEATURED SNIPPET",
+    "VOICE SEARCH",
+    "REVIEW SNIPPETS",
+    "KNOWLEDGE PANEL",
+    "SCORECARD",
 ]
 
 BANNED_PHRASES = [
@@ -51,6 +87,27 @@ BANNED_PHRASES = [
     "this guarantees rankings",
     "this is why your traffic dropped",
     "your store will be deindexed",
+    "store readiness score",
+    "100-point",
+    "this is a diagnostic benchmark",
+    "what this means",
+]
+
+# Phrases that indicate recommending llms.txt as an action — research shows
+# Google says no new AI text files needed. Never recommend creating one.
+LLMS_TXT_ACTION_PHRASES = [
+    "create llms.txt",
+    "create an llms.txt",
+    "add llms.txt",
+    "add an llms.txt",
+    "implement llms.txt",
+    "set up llms.txt",
+    "build llms.txt",
+    "generate llms.txt",
+    "recommend creating llms.txt",
+    "should create llms.txt",
+    "consider adding llms.txt",
+    "consider creating llms.txt",
 ]
 
 WATCH_PHRASES = [
@@ -60,11 +117,54 @@ WATCH_PHRASES = [
     "every page",
     "definitely",
     "guaranteed",
+    "missing llms.txt",
 ]
+
+# Score patterns to reject: "43/100", "16/20", "3/15", etc.
+SCORE_PATTERNS = [
+    r"\b\d{1,3}\s*/\s*\d{2,3}\b",  # X/YY or X/YYY
+]
+
+# Checkmark list patterns: lines starting with ✓ or ✗
+CHECKMARK_PATTERN = r"^\s*[✓✗✔✘☑☒⚠]\s"
+
+MIN_WORDS_BY_MODE = {
+    "full": 100,
+    "focused": 40,
+    "review": 40,
+}
 
 
 def find_missing(text: str, items: list[str]) -> list[str]:
     return [item for item in items if item not in text]
+
+
+def extract_finding_blocks(text: str, has_sample_fixes: bool) -> list[tuple[int, str]]:
+    end_heading = r"^\s*SAMPLE FIXES\s*$" if has_sample_fixes else r"\Z"
+    findings_match = re.search(
+        rf"(?ms)^\s*FINDINGS\s*$\n(?P<body>.*?)(?={end_heading})",
+        text,
+    )
+    if not findings_match:
+        return []
+
+    body = findings_match.group("body")
+    blocks: list[tuple[int, str]] = []
+    for match in re.finditer(r"(?ms)^\s*#(?P<num>\d+)\b.*?(?=^\s*#\d+\b|\Z)", body):
+        blocks.append((int(match.group("num")), match.group(0)))
+    return blocks
+
+
+def validate_finding_blocks(blocks: list[tuple[int, str]]) -> list[str]:
+    errors: list[str] = []
+    required_fields = ("Scope:", "Proof:", "Fix:", "Impact:")
+
+    for finding_number, block in blocks:
+        for field in required_fields:
+            if not re.search(rf"^\s*{re.escape(field)}\s*", block, flags=re.MULTILINE):
+                errors.append(f"finding #{finding_number} is missing {field.rstrip(':')}")
+
+    return errors
 
 
 def check_full(text: str, lowered: str) -> tuple[list[str], list[str]]:
@@ -76,23 +176,44 @@ def check_full(text: str, lowered: str) -> tuple[list[str], list[str]]:
     if missing:
         errors.append(f"missing required headings: {', '.join(missing)}")
 
-    # Dimension sections — errors, not warnings
-    missing_sections = find_missing(text, FULL_REQUIRED_SECTIONS)
-    if missing_sections:
-        errors.append(f"missing required dimension sections: {', '.join(missing_sections)}")
+    old_headings = [heading for heading in OLD_FORMAT_HEADINGS if heading in text]
+    if old_headings:
+        errors.append(f"contains old-format headings that the current skill forbids: {', '.join(old_headings)}")
 
-    # Scope and evidence (must have enough for a full audit)
-    scope_count = len(re.findall(r"^\s*Scope:\s*", text, flags=re.MULTILINE))
-    evidence_count = len(re.findall(r"^\s*Evidence:\s*", text, flags=re.MULTILINE))
+    finding_blocks = extract_finding_blocks(text, has_sample_fixes=True)
+    finding_count = len(finding_blocks)
+    problem_count = len(re.findall(r"^\s*Problem:\s*", text, flags=re.MULTILINE))
+    result_count = len(re.findall(r"^\s*Result:\s*", text, flags=re.MULTILINE))
 
-    if scope_count < 5:
-        errors.append(f"expected at least 5 Scope lines in a full audit, found {scope_count}")
-    if evidence_count < 5:
-        errors.append(f"expected at least 5 Evidence lines in a full audit, found {evidence_count}")
+    if finding_count < 3:
+        errors.append(f"expected at least 3 findings in a full audit, found {finding_count}")
+    if finding_count > 10:
+        errors.append(f"full audit exceeds the 10-finding cap, found {finding_count}")
+    errors.extend(validate_finding_blocks(finding_blocks))
+    if problem_count < 1:
+        errors.append("full audit is missing sample-fix Problem lines")
+    if result_count < 1:
+        errors.append("full audit is missing sample-fix Result lines")
 
     # Scope labels
     if not any(label in text for label in ("Catalog-wide", "Sampled", "Inference")):
         errors.append("no explicit Catalog-wide / Sampled / Inference labels detected")
+
+    word_count = len(text.split())
+    if word_count < MIN_WORDS_BY_MODE["full"]:
+        errors.append(
+            f"report is too short ({word_count} words). A valid full audit needs at least {MIN_WORDS_BY_MODE['full']} words."
+        )
+
+    line_count = len(text.strip().splitlines())
+    if line_count > 180:
+        errors.append(
+            f"report is too long ({line_count} lines). A full audit should be 80-140 lines max. Cut the noise."
+        )
+    elif line_count > 140:
+        warnings.append(
+            f"report is {line_count} lines — pushing the 140-line limit. Consider cutting lower-impact findings."
+        )
 
     # GEO content
     if "ai bot" not in lowered and "ai visibility" not in lowered and "geo" not in lowered:
@@ -121,15 +242,29 @@ def check_focused(text: str, lowered: str) -> tuple[list[str], list[str]]:
     if missing:
         errors.append(f"missing required headings for focused audit: {', '.join(missing)}")
 
+    old_headings = [heading for heading in OLD_FORMAT_HEADINGS if heading in text]
+    if old_headings:
+        errors.append(f"contains old-format headings that the current skill forbids: {', '.join(old_headings)}")
+
     # At least one dimension must be covered
     has_dimension = any(dim in text for dim in ("SEO", "GEO", "AEO"))
     if not has_dimension:
         errors.append("focused audit must cover at least one dimension (SEO, GEO, or AEO)")
 
-    # Must have at least 1 Scope line
-    scope_count = len(re.findall(r"^\s*Scope:\s*", text, flags=re.MULTILINE))
-    if scope_count < 1:
-        errors.append("expected at least 1 Scope line in a focused audit")
+    finding_blocks = extract_finding_blocks(text, has_sample_fixes=False)
+    finding_count = len(finding_blocks)
+
+    if finding_count < 1:
+        errors.append("expected at least 1 finding in a focused audit")
+    if finding_count > 5:
+        errors.append(f"focused audit exceeds the 5-finding cap, found {finding_count}")
+    errors.extend(validate_finding_blocks(finding_blocks))
+
+    word_count = len(text.split())
+    if word_count < MIN_WORDS_BY_MODE["focused"]:
+        errors.append(
+            f"report is too short ({word_count} words). A valid focused audit needs at least {MIN_WORDS_BY_MODE['focused']} words."
+        )
 
     return errors, warnings
 
@@ -147,6 +282,20 @@ def check_review(text: str, lowered: str) -> tuple[list[str], list[str]]:
     if len(found_sections) < 2:
         errors.append(f"audit review must have at least 2 classification sections, found {len(found_sections)}: {found_sections}")
 
+    legacy_review_headings = [
+        heading for heading in LEGACY_REVIEW_HEADINGS if re.search(rf"^\s*{re.escape(heading)}\s*$", text, flags=re.MULTILINE)
+    ]
+    if legacy_review_headings:
+        errors.append(
+            f"contains legacy review headings that the current template replaced: {', '.join(legacy_review_headings)}"
+        )
+
+    word_count = len(text.split())
+    if word_count < MIN_WORDS_BY_MODE["review"]:
+        errors.append(
+            f"report is too short ({word_count} words). A valid audit review needs at least {MIN_WORDS_BY_MODE['review']} words."
+        )
+
     return errors, warnings
 
 
@@ -157,16 +306,36 @@ def check_common(text: str, lowered: str) -> tuple[list[str], list[str]]:
 
     for phrase in BANNED_PHRASES:
         if phrase in lowered:
-            errors.append(f"contains banned phrase: {phrase}")
+            errors.append(f"contains banned phrase: '{phrase}'")
+
+    # Check for llms.txt being recommended as an action item
+    for phrase in LLMS_TXT_ACTION_PHRASES:
+        if phrase in lowered:
+            errors.append(
+                f"recommends creating llms.txt ('{phrase}') — research shows Google says "
+                "no new AI text files needed. Never recommend this as an action."
+            )
+
+    # Check all score patterns (X/Y ratings)
+    for pattern in SCORE_PATTERNS:
+        matches = re.findall(pattern, text)
+        if matches:
+            errors.append(
+                f"contains numerical scores even though the skill forbids them: {', '.join(matches[:5])}"
+            )
+            break
+
+    # Check for checkmark lists (✓/✗ pattern)
+    checkmark_lines = re.findall(CHECKMARK_PATTERN, text, flags=re.MULTILINE)
+    if len(checkmark_lines) > 2:
+        errors.append(
+            f"contains {len(checkmark_lines)} checkmark list lines (✓/✗) — "
+            "report should only list issues to fix, not what's working"
+        )
 
     for phrase in WATCH_PHRASES:
         if phrase in lowered:
-            warnings.append(f"contains watch phrase that often overstates findings: {phrase}")
-
-    # Minimum content length — reject trivially short reports
-    word_count = len(text.split())
-    if word_count < 100:
-        errors.append(f"report is too short ({word_count} words). A valid report needs at least 100 words.")
+            warnings.append(f"contains watch phrase that often overstates findings: '{phrase}'")
 
     return errors, warnings
 

@@ -3,7 +3,7 @@
 ## Contents
 
 1. FAQ schema
-2. HowTo schema
+2. Instructional content
 3. Featured snippet readiness
 4. Voice search readiness
 5. People Also Ask optimization
@@ -17,39 +17,34 @@
 
 AEO (Answer Engine Optimization) is about winning direct answer positions — featured snippets, answer boxes, voice responses, Knowledge Panels, and People Also Ask boxes.
 
-Key stats:
-- ~60% of Google searches end without a click.
-- 40.7% of voice search answers are pulled from featured snippets.
-- Pages with FAQ schema are 3.2x more likely to appear in Google AI Overviews.
-- FAQ schema produces 28-36% higher citation rates in AI-generated answers.
+Key context:
+- A significant share of Google searches result in zero clicks (direct answers, Knowledge Panels, AI Overviews).
+- Voice assistants frequently extract answers from featured snippets.
+- **Important:** Google deprecated FAQ rich results for most sites (August 2023). Only gov/health sites get SERP display. The value for ecommerce is in the FAQ *content*, not the markup.
+- AI citation readiness depends on indexability, content extractability, and completeness — not on specific schema types (per Google's official guidance).
 
 ---
 
 ## 1. FAQ Schema
 
-### 1.1 FAQPage Schema Presence
+### 1.1 FAQ Content Quality (NOT Schema Presence)
 
-Check sampled pages for `@type: FAQPage` in JSON-LD with `mainEntity` array containing `@type: Question` objects, each with `acceptedAnswer` of `@type: Answer`.
+**Research-backed guidance:** Google deprecated FAQ rich results for most sites (August 2023) — only gov/health sites get SERP display. Google also states structured data features are never guaranteed even when implemented. Do NOT score FAQPage schema presence as a positive factor for AI citation readiness.
 
-Valid structure:
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": "What size should I order?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "We recommend ordering your usual size..."
-    }
-  }]
-}
-```
+**What actually matters:** Shopify's AI guidance specifically highlights that complete store policies and curated FAQs help AI agents answer shopper questions. The value is in the **content**, not the markup.
 
-**Important note:** Google deprecated FAQ rich results for most sites (August 2023) — only government and health sites get the SERP display. However, FAQ schema still drives AI citations. AI platforms actively crawl and cite FAQ structured data. The schema remains critical for GEO/AEO even without traditional rich result display.
+Check for:
+- Does the store have FAQ content (on product pages, dedicated FAQ page, policy pages)?
+- Is the FAQ content substantive — does it answer real customer questions (sizing, shipping, returns, care, materials)?
+- Is the content visible on the page (not hidden behind JavaScript accordions that block extraction)?
+- Does it cover the questions shoppers actually ask?
 
-- Severity: HIGH (for AI citation) / LOW (for SERP rich result)
+**Do NOT check for or reward:**
+- FAQPage schema markup presence
+- Specific JSON-LD structure for FAQs
+- Schema as a driver of AI citations
+
+- Severity: HIGH (for FAQ **content** quality) / INFORMATIONAL (for schema presence)
 
 ### 1.2 FAQPage vs QAPage
 
@@ -78,31 +73,27 @@ Most valuable placement for ecommerce: product pages (captures product-specific 
 
 ---
 
-## 2. HowTo Schema
+## 2. Instructional Content
 
-### 2.1 HowTo Schema Presence
+**Research-backed guidance:** Google deprecated HowTo rich results (September 2023). HowTo schema is irrelevant for non-instructional products (shoes, clothing, accessories). Do NOT flag missing HowTo schema unless the store sells products that genuinely require assembly, setup, or step-by-step usage instructions.
 
-Check for `@type: HowTo` in JSON-LD with a `step` array of `HowToStep` objects.
+### 2.1 Instructional Content (Gated by Product Type)
 
-Relevant for ecommerce content:
-- Styling guides
-- Care instructions
-- Assembly/setup guides
-- How-to-wear/how-to-use content
-- Gift guides with steps
+**Only check when relevant:**
+- Assembly/setup products (furniture, electronics, DIY kits)
+- Products with care/maintenance routines (leather goods, plants, specialty items)
+- Products with how-to-use content (cosmetics application, cooking equipment)
 
-**Note:** Google deprecated HowTo rich results (September 2023). But the schema still helps AI systems parse instructional content. Step-by-step content is citation-friendly because LLMs can extract individual steps.
+**Skip for:** shoes, clothing, accessories, jewelry, basic consumer goods — these do not need instructional content or HowTo schema.
 
-- Severity: MEDIUM
-
-### 2.2 Instructional Content Without Schema
-
-Even without HowTo schema, check for step-by-step content patterns:
+Check for step-by-step content patterns:
 - Headings with "Step 1:", "How to...", numbered items
 - `<ol>` elements within product descriptions or blog posts
 - Pages at `/blogs/` or `/pages/` with care guides, styling guides
 
-- Severity: LOW
+**Do NOT check for or recommend:** HowTo schema markup (deprecated by Google).
+
+- Severity: **CONDITIONAL** — only relevant for instructional product categories. Never a finding for clothing/shoes/accessories stores.
 
 ---
 
@@ -190,15 +181,15 @@ Google often pulls the paragraph under an H2/H3 as the PAA answer.
 
 **Detection:** Parse all H2/H3 tags. Count those starting with What/How/Why/When/Where/Who/Is/Can/Does.
 
-- Severity: HIGH
+- Severity: MEDIUM — helpful pattern but not every page needs question headings to be extractable
 
 ### 5.2 Direct Answer First Paragraph
 
-After each question heading, the first paragraph should be a direct, concise answer (40-60 words) before expanding into detail.
+After each question heading, the first paragraph should directly address the question before expanding into detail.
 
-**Detection:** For each question heading, extract the following paragraph. Check word count and whether it directly addresses the question.
+**Detection:** For each question heading, extract the following paragraph. Check whether it directly addresses the question. Do NOT enforce rigid word-count ranges.
 
-- Severity: HIGH
+- Severity: MEDIUM
 
 ### 5.3 Related Question Coverage
 
@@ -249,53 +240,51 @@ Check for review widgets from Judge.me, Yotpo, Stamped.io, Loox, Trustpilot, Rev
 
 ## 7. Knowledge Panel Signals
 
+**Research-backed guidance:** Most DTC brands do NOT have Knowledge Panels and are unlikely to get one. This is not a meaningful target for typical Shopify stores. Do NOT flag missing Knowledge Panel eligibility as a finding.
+
 ### 7.1 Organization Schema with sameAs
 
 Covered in geo-checks.md section 3.1-3.2. Cross-reference here for completeness.
 
-Key requirements:
-- `@type: Organization` or `@type: OnlineStore` on homepage
-- `sameAs` array linking to Wikipedia, Wikidata, social profiles
-- Consistent NAP (Name, Address, Phone)
-
-- Severity: HIGH
+- Severity: **LOW for most DTC brands** — only relevant for nationally recognised brands with entity disambiguation needs. See geo-checks.md §3.1 for conditional guidance.
 
 ### 7.2 Wikidata Entry
 
-Check `sameAs` array for `wikidata.org` URL. Wikidata entries feed Google Knowledge Graph directly and are considered essential for Knowledge Panel eligibility.
+Check `sameAs` array for `wikidata.org` URL. Wikidata entries can feed Google Knowledge Graph.
 
-- Severity: HIGH (for established brands) / LOW (for new stores)
+- Severity: **LOW** — most DTC brands don't have Wikidata entries and don't need them. Only note for brands with national/international recognition.
 
 ---
 
 ## 8. Comparison and Buying Guide Content
 
-### 8.1 Comparison Tables on Pages
+**Research-backed guidance:** Comparison content is context-dependent. Single-brand DTC stores (one brand, one product category) do NOT need "A vs B" comparison tables — they have no competitor products to compare. Multi-brand stores and retailers benefit significantly from comparison content.
 
-Check for `<table>` elements on product, collection, and blog pages with comparison semantics (column headers with product/feature names, rows with specs/pricing).
+### 8.1 Comparison Tables on Pages (Gated)
 
-AI answers frequently respond to "Which product is best?" and "How does A compare to B?" queries.
+**Only flag for:**
+- Multi-brand stores/marketplaces where shoppers compare products
+- Stores with varied product categories where cross-category comparison helps
 
-- Severity: HIGH
+**Do NOT flag for:**
+- Single-brand DTC stores (e.g., a shoe brand comparing only their own shoes)
+- Stores where "comparison" means material/spec tables within product descriptions (these are product attributes, not comparison content — check in PDP completeness instead)
 
-### 8.2 "X vs Y" Content
+- Severity: **CONDITIONAL** — HIGH for multi-brand, INFORMATIONAL for single-brand DTC
 
-Check blog and page titles/headings for comparison patterns:
-- "[Product A] vs [Product B]"
+### 8.2 Buying Guide Content
+
+Check blog and page titles/headings for buying guide content:
 - "Best [Category] in [Year]"
 - "Buying Guide"
-- "[Product] Compared"
+- Category-level educational content
 
-- Severity: HIGH
+Buying guides are valuable when they address genuine purchase-decision questions, but their absence is not a finding for every store.
+
+- Severity: MEDIUM — only flag if the store has a blog/content section but no category-level guides
 
 ### 8.3 Buying Guide Depth
 
-For identified guide/comparison pages, check:
-- Word count (1,000+ words for comprehensive guide)
-- Multiple H2/H3 sections
-- Presence of lists and/or tables
-- Recommendation language ("we recommend", "best for", "ideal for")
+For identified guide pages, check for substantive content with clear structure, factual claims, and product recommendations.
 
-LLMs prefer to extract from a single comprehensive source rather than aggregating from multiple pages.
-
-- Severity: MEDIUM
+- Severity: LOW — informational quality note, not a standalone finding

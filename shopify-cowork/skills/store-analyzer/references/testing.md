@@ -34,6 +34,7 @@ These prompts should NOT trigger the skill:
 4. `Help me improve local SEO for my dental clinic`
 5. `Analyze my Search Console export and explain the CTR drop`
 6. `Fix the product descriptions on my store` (should trigger store-fixer, not analyzer)
+   Expected: hand off to `store-fixer`, not direct execution from analyzer. `store-fixer` should require approval before writes and a rollback path.
 7. `Compare my store against competitors` (should trigger intel-competitors if it exists)
 8. `Set up Google Ads for my store`
 
@@ -65,14 +66,52 @@ A good audit should:
 - Sample varied pages (not just the first handles)
 - Label findings as `Catalog-wide`, `Sampled`, or `Inference`
 - Cover all three dimensions (SEO, GEO, AEO) in a full audit
-- Check AI bot access in robots.txt
-- Check for llms.txt
-- Check Organization schema and sameAs links
-- Check for FAQ/HowTo schema
-- Check for question-based headings and answer format
 - Prioritize by business impact, not by how dramatic findings sound
-- Include Top 5 Actions
+- Use the flat report template: `BOTTOM LINE`, `SNAPSHOT`, `FINDINGS`, `SAMPLE FIXES`
+- NEVER produce scores, dimension groupings, checkmark lists, or EXECUTIVE SUMMARY
+- Stay within 80-120 lines for a full audit
 - Include sample fixes using real products/collections
+- Hand off implementation requests to `store-fixer` instead of attempting authenticated changes
+- Apply the Finding Quality Bar: every finding must have provable revenue/traffic impact
+- For established stores (500+ products, active reviews, proper schema): produce 4-6 findings, not 8-10
+- Merge related issues (meta descriptions + thin titles = one finding, not two)
+- Never pad the report with checkbox items (missing llms.txt, no HowTo schema, no Speakable, etc.)
+
+## 5.1 Quality Bar Tests — Established Stores
+
+When auditing a well-run store (500+ products, active reviews, proper Product schema):
+
+1. Report should have 4-6 findings, not 8-10.
+2. These should NOT appear as standalone findings:
+   - "Missing llms.txt" (Google says no new AI text files needed)
+   - "No HowTo schema" (deprecated by Google Sep 2023, irrelevant for non-instructional products)
+   - "No FAQPage schema" (deprecated Aug 2023 for non-gov/health — score content, not markup)
+   - "No comparison tables" (single-brand DTC stores don't need these)
+   - "Missing Speakable schema" (beta, news-only)
+   - "No Knowledge Panel" (most DTC brands don't have one)
+   - "Missing Organization schema" (not in Google's/Bing's core AI requirements)
+   - "Brand name inconsistency" when only difference is apostrophe in domain
+   - "Missing fetchpriority on hero image" (micro-optimization, never a finding)
+   - "Title too long/short" (Google rewrites titles freely, no fixed character rules)
+   - "Meta description over 160 characters" (Google truncates dynamically)
+   - "Missing OG/Twitter tags" (social preview, not AI citation factor)
+3. GEO/AEO issues should be merged, not listed as 5+ separate findings.
+4. The report must NOT contain ✓/✗ checkmark lists of what's working.
+5. No scores anywhere in the output.
+
+## 5.2 Research-Aligned Acceptance Checks
+
+These checks verify the report follows current research (Google Search Central, Bing Webmaster, Shopify AI docs):
+
+1. **llms.txt is NEVER recommended as an action item.** Noting its presence is fine; recommending creation is a fail.
+2. **FAQPage schema is NOT treated as a positive AI citation factor.** FAQ *content* quality is valued, not markup.
+3. **No character-count penalties** for titles or meta descriptions. Only missing/duplicated/misleading are flagged.
+4. **Default Shopify technicals are pass/fail**, not findings. Robots.txt, sitemap, SSL, canonicals present = pass.
+5. **Performance proxies never appear as findings.** fetchpriority, image dimensions, preload hints are informational only.
+6. **Organization schema is conditional.** Only a finding for nationally recognised brands, not typical DTC stores.
+7. **HowTo schema is not recommended** for clothing/shoes/accessories stores.
+8. **Comparison tables are not recommended** for single-brand DTC stores.
+9. **OG/Twitter tags, meta keywords, rel=prev/next are never weighted** for AI readiness.
 
 ## 6. Overtriggering and Undertriggering Signals
 
@@ -85,4 +124,4 @@ Overtriggering:
 - Skill loads for generic SEO questions not specific to Shopify
 - Skill loads for content writing tasks
 - Skill loads for Search Console/GA4 analysis
-- Skill loads when user wants to FIX issues (should be store-fixer)
+- Skill loads when user wants to FIX issues instead of handing off to `store-fixer`

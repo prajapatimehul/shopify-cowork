@@ -94,19 +94,25 @@ Check for:
 
 ## 2. Titles and Snippets
 
+**Research-backed guidance:** Google uses multiple sources to determine title links and can rewrite them; there is no fixed character-count guarantee. Meta descriptions are "sometimes" used for snippets; snippets are truncated "as needed." Do NOT penalise based on character counts alone.
+
 Check sampled pages for:
 
-- Title tags under 30 or over 60 characters
-- Repetitive title templates across sampled pages
-- Titles that exactly match product names with no modifiers
-- Missing meta descriptions
-- Meta descriptions over 160 characters (truncation)
-- Descriptions that appear templated or generic
-- Identical title pattern across product pages (e.g., "{product} | {store}")
+- **Missing titles** — pages with no `<title>` tag at all
+- **Missing meta descriptions** — pages with no `<meta name="description">`
+- **Mass-duplicated titles** — identical title pattern across many pages with no product/category differentiation
+- **Misleading titles** — title content that does not match visible page intent
+- Titles that exactly match product names with no modifiers (low priority — note only)
+- Descriptions that appear templated or generic (low priority — note only)
+
+**Do NOT flag or penalise:**
+- Title "too short" (under 60 chars) or "too long" (over 60 chars) — Google rewrites titles freely
+- Meta description "over 160 characters" — Google truncates dynamically, no fixed limit
+- Character-count ranges as findings — these are not actionable
 
 **Framing:**
-- Strong: default or repetitive snippets leave ranking and CTR opportunity on the table.
-- Lower: titles are acceptable but not differentiated.
+- Strong: missing or mass-duplicated titles/descriptions mean Google must guess intent — flag this.
+- Lower: titles are present and differentiated but not "optimised" — do not flag as a finding.
 
 ---
 
@@ -137,6 +143,8 @@ Check `<a>` tags on collection pages linking to products. Shopify themes using `
 
 ## 4. Robots.txt and Sitemap
 
+**Research-backed guidance:** Shopify auto-generates `robots.txt`, `sitemap.xml`, canonical tags, and SSL on all theme-based stores. These are NOT differentiators — treat them as **pass/fail**. Only flag if broken, missing, or customised in a way that harms crawling.
+
 ### 4.1 Robots.txt Checks
 
 Shopify's default blocks:
@@ -150,20 +158,19 @@ Shopify's default blocks:
 | `/*preview_theme_id*` | Theme previews |
 | `/policies/` | Auto-generated policy pages |
 
-Check whether these rules are present. Missing rules = crawl traps.
+**Pass/fail:** If these rules are present (Shopify default), mark as passing and move on. Only flag as a finding if rules are missing due to customisation or if critical paths are accidentally blocked.
 
 ### 4.2 Sitemap Checks
 
 - Sitemap accessible at `/sitemap.xml` (HTTP 200, valid XML)
 - Sub-sitemaps present: products, collections, pages, blogs
-- Product count in sitemap roughly matches `meta.json` published count
-- Image metadata present in product sitemap entries (`<image:image>`)
-- No 404 or redirect URLs in sitemap
-- `<lastmod>` dates present and plausible
+
+**Pass/fail:** If sitemap is standard Shopify-generated, mark as passing. Only flag if sitemap is missing, returns errors, or if headless build lacks proper sitemap generation.
 
 **Framing:**
-- Strong: crawl traps or missing sitemap coverage waste crawl attention.
+- These checks exist to catch breakage, not to award points for Shopify defaults.
 - Do not claim indexation failure unless pages are actually blocked or noindexed.
+- For headless Shopify (Hydrogen): these become meaningful checks since they require explicit configuration.
 
 ---
 
@@ -226,22 +233,25 @@ Check from sitemap and sampled articles:
 
 ## 8. Performance Proxies
 
+**Research-backed guidance:** These are micro-optimisations. Missing `fetchpriority`, image dimensions, or preload hints are NOT findings for established stores. Mention in passing only. Never make these a standalone finding.
+
 From sampled HTML, check:
 
-| Check | What to look for | Why it matters |
+| Check | What to look for | Status |
 |---|---|---|
-| LCP image lazy-loaded | `<img>` with `loading="lazy"` on hero/main product image | 59% of Shopify stores do this; adds ~3 seconds to LCP |
-| Missing `fetchpriority="high"` | Hero image lacks `fetchpriority="high"` | Tells browser to prioritize the most important image |
-| Missing image dimensions | `<img>` without `width` and `height` attributes | Causes CLS as images load |
-| High external script count | Count unique external script domains | Each domain adds DNS lookup + connection time |
-| Render-blocking resources | `<script>` without `async`/`defer` in `<head>` | Delays First Contentful Paint |
-| No preload hints | Missing `<link rel="preload">` for hero image or critical font | Increases LCP |
-| Font loading | Missing `font-display: swap` in CSS | Invisible text during font load |
+| LCP image lazy-loaded | `<img>` with `loading="lazy"` on hero/main product image | Informational — mention if found |
+| Missing `fetchpriority="high"` | Hero image lacks `fetchpriority="high"` | Informational only — never a finding |
+| Missing image dimensions | `<img>` without `width` and `height` attributes | Informational only — never a finding |
+| High external script count | Count unique external script domains | Note if extreme (15+), but not a standalone finding |
+| Render-blocking resources | `<script>` without `async`/`defer` in `<head>` | Informational — recommend PageSpeed Insights |
+| No preload hints | Missing `<link rel="preload">` for hero image or critical font | Informational only |
+| Font loading | Missing `font-display: swap` in CSS | Informational only |
 
 **Framing:**
-- These are proxy checks only.
+- These are proxy checks only — **never elevate to a finding**.
 - Recommend PageSpeed Insights or Lighthouse for confirmation.
 - Do not claim failed Core Web Vitals from HTML alone.
+- AI citation readiness is not affected by these performance signals.
 
 ---
 
@@ -259,13 +269,21 @@ From sampled HTML, check:
 
 ## 10. Lower-Priority Hygiene
 
+**Research-backed guidance:** OG/Twitter tags are social preview metadata, not AI citation readiness signals. Google's AI eligibility is framed around indexing/snippet eligibility, not social tags. Image alt text helps image understanding but citations are grounded on textual evidence. Do not weight these for AI readiness.
+
 Report but do not headline:
 
-- Open Graph tag issues
-- Twitter card issues
-- H1 count issues (multiple H1s or missing H1)
-- URL handle quality (keyword-relevant vs. auto-generated)
-- Missing alt text on sampled images (note: alt text is NOT in `/products.json`)
+- Open Graph tag issues — **not an AI citation factor**; social preview only
+- Twitter card issues — **not an AI citation factor**; social preview only
+- H1 count issues (multiple H1s or missing H1) — low priority, note only
+- URL handle quality — score only for unreadable/parameter-junk URLs, not keyword presence
+- Missing alt text on sampled images — gate to primary product images and images carrying essential info only (note: alt text is NOT in `/products.json`)
 - Empty `product_type` or messy vendor values (covered more deeply in catalog-checks.md)
+
+**Do NOT include in AI readiness scoring:**
+- OG/Twitter tag completeness
+- Favicon presence
+- Meta keywords (Google explicitly ignores this tag)
+- `rel=prev/next` pagination tags (Google no longer uses these)
 
 Use clear downgrade language: `Real but secondary`, `Worth fixing in bulk`, `Good cleanup after higher-leverage work`.

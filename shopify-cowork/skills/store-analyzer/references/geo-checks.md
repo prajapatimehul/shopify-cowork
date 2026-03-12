@@ -15,12 +15,9 @@
 
 GEO (Generative Engine Optimization) is about making a store visible and citable by AI search engines — ChatGPT, Perplexity, Google AI Overviews, Gemini, Claude.
 
-Key stats:
-- AI-driven traffic to Shopify sites grew 8x YoY in 2025.
-- AI-referred purchases carry 30% higher AOV than traditional search.
-- 60% of Google searches end without a click (zero-click).
-- Brand search volume is the strongest predictor of AI citations (r=0.334).
-- Web mentions correlate 3x more with AI visibility than backlinks.
+Focus on directly observable signals from the store: crawl access, entity clarity, third-party trust signals, extractable content, and freshness.
+
+Do not rely on unsourced citation-rate claims or platform-wide assumptions. GEO findings should stay evidence-based and specific to the store being audited.
 
 ---
 
@@ -28,71 +25,70 @@ Key stats:
 
 ### 1.1 Robots.txt AI Bot Rules
 
-**Critical finding:** Shopify updated all stores' default `robots.txt` in mid-2025 to block major AI crawlers. Additionally, Shopify's Cloudflare layer may return 402/403 to AI user-agents even if robots.txt allows them.
+**Critical rule:** Inspect the store's live `robots.txt` directly. Do not assume Shopify's default `robots.txt` blocks or allows AI crawlers. Shopify documents that stores ship with a default `robots.txt` optimized for SEO, and merchants can customize it via `robots.txt.liquid`.
+
+Some Shopify stores also include comment banners in `robots.txt` about automated checkout or agent policy. Treat comments as context only; crawler access is determined by actual directives such as `User-agent`, `Allow`, `Disallow`, and `Crawl-delay`.
 
 Fetch `/robots.txt` and check for these user-agents:
 
-| Bot | Purpose | Default Status |
+| Bot / Token | Purpose | What to check |
 |---|---|---|
-| `GPTBot` | OpenAI training crawler | BLOCKED by Shopify |
-| `OAI-SearchBot` | OpenAI real-time search | BLOCKED by Shopify |
-| `ChatGPT-User` | ChatGPT browsing | BLOCKED by Shopify |
-| `Google-Extended` | Google AI training (NOT Googlebot) | BLOCKED by Shopify |
-| `ClaudeBot` | Anthropic's crawler | BLOCKED by Shopify |
-| `anthropic-ai` | Anthropic's older agent | BLOCKED by Shopify |
-| `PerplexityBot` | Perplexity search | BLOCKED by Shopify |
-| `Applebot-Extended` | Apple AI features | BLOCKED by Shopify |
-| `CCBot` | Common Crawl (feeds many LLMs) | Often blocked |
-| `Bytespider` | ByteDance/TikTok crawler | Often blocked |
-| `Meta-ExternalAgent` | Meta AI | Varies |
-| `cohere-ai` | Cohere LLM | Varies |
+| `OAI-SearchBot` | OpenAI search indexing | Whether `robots.txt` explicitly allows or blocks it |
+| `GPTBot` | OpenAI training crawler | Whether `robots.txt` explicitly allows or blocks it |
+| `ChatGPT-User` | OpenAI user-initiated fetches | Note separately; OpenAI says it is not used for automatic search crawling |
+| `Claude-SearchBot` | Anthropic search indexing | Whether `robots.txt` explicitly allows or blocks it |
+| `ClaudeBot` | Anthropic training crawler | Whether `robots.txt` explicitly allows or blocks it |
+| `Claude-User` | Anthropic user-initiated fetches | Note separately from search/training bots |
+| `PerplexityBot` | Perplexity search indexing | Whether `robots.txt` explicitly allows or blocks it |
+| `Google-Extended` | Google training/grounding control token | Whether `robots.txt` explicitly allows or blocks it |
 
-**Detection:** Parse robots.txt for `User-agent: {bot}` followed by `Disallow: /`.
+**Detection:** Parse `robots.txt` for explicit groups targeting these tokens. Distinguish:
+- Full-site block: `Disallow: /`
+- Partial restriction: narrower path rules only
+- No explicit directive: no bot-specific rule present
 
-**Critical distinction:** `OAI-SearchBot` and `ChatGPT-User` are SEARCH bots (show your products in AI search results). `GPTBot` and `Google-Extended` are TRAINING bots (use your content for model training). Stores wanting AI visibility should consider allowing search bots while blocking training bots.
+**Critical distinction:**
+- `OAI-SearchBot`, `Claude-SearchBot`, and `PerplexityBot` are search-oriented crawlers.
+- `GPTBot`, `ClaudeBot`, and `Google-Extended` relate to training or model-use permissions.
+- `ChatGPT-User` and `Claude-User` are user-initiated fetch agents and should not be treated as automatic search crawlers.
 
 **Framing:**
-- If ALL AI bots are blocked: "The store is invisible to AI search engines including ChatGPT, Perplexity, and Google AI Overviews. Products cannot appear in AI-generated shopping recommendations."
-- If search bots are blocked but training bots would be too: "Consider allowing search-oriented AI bots (OAI-SearchBot, PerplexityBot) while keeping training bots blocked."
-- Note: Shopify controls the default robots.txt. Merchants can customize it via `robots.txt.liquid` but many do not know they need to.
+- If search-oriented bots are explicitly blocked: "Search-oriented AI crawlers are blocked in `robots.txt`, which likely reduces visibility in AI search experiences that rely on those crawlers."
+- If only training-oriented bots or tokens are blocked: "Training-oriented AI access is restricted, but that alone does not prove the store is excluded from AI search results."
+- If no explicit AI bot directives are present: "No explicit AI crawler directives were found in `robots.txt`. Do not assume either blocking or visibility beyond what the file states."
+- Attribute findings to the live `robots.txt`, not to assumed Shopify defaults.
 - Severity: HIGH
 
 ### 1.2 Cloudflare AI Bot Blocking
 
-Shopify routes traffic through Cloudflare, which may independently block AI bots with 402 or 403 responses even if robots.txt allows them.
+Some stores may add an additional blocking layer through CDN or WAF tooling. Cloudflare AI Crawl Control, for example, can return `403` or `402` responses when configured to block AI crawlers.
 
-**Detection:** This cannot be reliably detected from a standard HTTP request. Note it as a potential issue if robots.txt blocks are found, since Cloudflare adds a second layer.
+**Detection:** Do not assume this is present on Shopify by default. Mention it only when there is supporting evidence, such as bot-specific failures, provider-specific headers, or merchant documentation. From a standard public request, this is usually an inference rather than a confirmed finding.
 
-- Severity: MEDIUM (informational — cannot be fully audited from public data)
+- Severity: LOW (informational — usually cannot be confirmed from public data alone)
 
 ---
 
 ## 2. llms.txt
 
+**Research-backed guidance:** Google explicitly states "you don't need new machine-readable files or AI text files" to appear in AI features. There is no special schema or file required for AI Overviews/AI Mode. Do NOT recommend creating llms.txt as an action item. Do NOT treat its absence as a problem.
+
 ### 2.1 Presence
 
 Check if `https://{domain}/llms.txt` returns HTTP 200 with valid content (not a 404, redirect to homepage, or empty response).
 
-**What llms.txt is:** A Markdown file that tells AI crawlers what the site is about and where to find key content. It is the AI equivalent of robots.txt — but for discovery, not blocking.
+**What llms.txt is:** An emerging community proposal for a Markdown file that gives LLMs a curated overview of a site. It is NOT a ranking factor, NOT required by any major AI search engine, and NOT part of Google's, Bing's, or Shopify's official AI guidance.
 
-**Spec requirements:**
-- H1 heading with site/brand name
-- Blockquote with a short site summary
-- Sections with links to key pages (products, collections, about, blog)
-- Optional: `llms-full.txt` with expanded content
+**Detection:** Fetch `/llms.txt`, check HTTP status code. Note presence or absence as informational context only.
 
-**Detection:** Fetch `/llms.txt`, check HTTP status code. If 200, check for valid Markdown structure (H1, links).
-
-- Severity: MEDIUM (growing importance — early adopters gain edge)
+- Severity: **INFORMATIONAL ONLY** (0 weight — never a finding, never a recommendation)
+- **NEVER recommend creating llms.txt as an action item**
+- If present: note it as a positive signal in SNAPSHOT, nothing more
+- If absent: do not mention it in FINDINGS
 
 ### 2.2 Quality
 
-If llms.txt exists, check:
-- Has an H1 heading
-- Has a blockquote summary
-- Links to product pages, collection pages, and about page
-- Links are absolute URLs, not relative
-- Content is substantive (not just the store name)
+If llms.txt exists, note its quality in SNAPSHOT context only. Do not create a finding about it.
 
 ---
 
@@ -100,41 +96,36 @@ If llms.txt exists, check:
 
 ### 3.1 Organization Schema
 
+**Research-backed guidance:** Organization schema is NOT in Google's or Bing's core AI citation requirements. It is not required for AI Overviews or Bing Copilot citations. Most DTC brands do not have Knowledge Panels. Only flag for nationally recognised brands where entity disambiguation genuinely matters.
+
 Check homepage JSON-LD for `@type: Organization` (or `@type: OnlineStore`, Google's recommended subtype for ecommerce).
 
-**Required fields:**
+**Required fields (if present):**
 - `name` — brand name
 - `url` — store URL
 - `logo` — logo image URL
 
-**Recommended fields:**
+**Recommended fields (if present):**
 - `sameAs` — array of social profile and authority URLs
 - `contactPoint` — phone/email
 - `description` — brand description
-- `address` — physical address if applicable
-- `foundingDate` — establishment date
 
-- Severity: HIGH (foundation for Knowledge Panel eligibility and entity recognition)
+- Severity: **CONDITIONAL** — only a finding for brands with national recognition or multi-brand stores where entity confusion is likely. For typical single-brand DTC stores, note in passing only.
 
 ### 3.2 sameAs Links
 
-Check the `sameAs` array in Organization schema for links to:
+Check the `sameAs` array in Organization schema for links to authoritative profiles.
 
 | Platform | Why It Matters |
 |---|---|
-| Wikipedia | Strongest entity recognition signal |
-| Wikidata | Feeds Google Knowledge Graph directly |
+| Wikipedia | Strong authority signal — only if brand genuinely merits a page |
+| Wikidata | Structured entity signal |
 | LinkedIn company page | Professional entity signal |
-| Instagram | Social proof |
-| Facebook | Social proof |
-| Twitter/X | Social proof |
-| YouTube | Content authority signal |
-| Google Business Profile | Local entity signal |
-| Crunchbase | Business entity signal |
+| Instagram | Social/brand consistency signal |
 
-More sameAs links = stronger entity graph = higher Knowledge Panel and AI citation likelihood.
+Consistent `sameAs` links can improve entity disambiguation for brands large enough to have disambiguation issues.
 
-- Severity: HIGH
+- Severity: **LOW** — most DTC brands do not need sameAs for AI citation readiness. Note as informational unless brand is nationally recognised or has entity confusion issues.
 
 ### 3.3 Brand Name Consistency
 
@@ -172,9 +163,7 @@ About pages establish E-E-A-T (Experience, Expertise, Authoritativeness, Trustwo
 
 Check Product JSON-LD for `aggregateRating.reviewCount`.
 
-Key stats:
-- Brands on review platforms (Trustpilot, G2, Judge.me) have 3x higher ChatGPT citation chance.
-- User-generated content is weighted highest by LLMs, followed by influencer/media content, then brand-owned content.
+Visible first-party or third-party review signals can make product claims easier for AI systems to trust and quote.
 
 **Detection:** Parse JSON-LD from sampled product pages. Check for `aggregateRating` and `review` arrays. Count total reviews visible.
 
@@ -210,7 +199,7 @@ Check sampled product pages for review widget scripts from known platforms:
 
 Check if `/pages/press`, `/pages/media`, `/pages/as-seen-in`, or similar exists.
 
-Third-party mentions correlate 3x more with AI visibility than backlinks (r=0.664 vs r=0.218).
+Third-party validation and press mentions can strengthen citation confidence when they are specific and verifiable.
 
 - Severity: LOW (informational)
 
@@ -220,33 +209,31 @@ Third-party mentions correlate 3x more with AI visibility than backlinks (r=0.66
 
 ### 5.1 Answer-First Content Format
 
-Check sampled pages for the answer-first pattern:
-1. Question-formatted H2/H3 heading (starts with What/How/Why/When/Where/Who)
-2. Immediately followed by a 40-60 word paragraph that directly answers the question
-3. Then expanded detail
+Check sampled pages for content that is clearly extractable by AI systems:
+1. Clear heading structure that signals topic sections
+2. Direct, factual content near headings (not preamble or marketing fluff)
+3. Specific product attributes: sizing, materials, care instructions, specifications
 
-**Detection:** Parse headings, check for question words, measure word count of the following paragraph.
+**Detection:** Check for content clarity and completeness, not rigid word-count ranges. The key question: "Can an AI system extract a confident, factual answer from this content?"
 
-This is the single most important content format for AI citation. 72.4% of pages cited by ChatGPT had this pattern.
-
-- Severity: HIGH
+- Severity: MEDIUM — focus on content clarity and completeness rather than strict question-heading format. Not every page needs question headings to be extractable.
 
 ### 5.2 Comparison Tables
 
-Check sampled pages for `<table>` elements with:
-- `<th>` header cells
-- At least 2 columns and 3+ rows
-- Product comparison semantics (feature/spec/price comparisons)
+**Research-backed guidance:** Comparison tables are relevant for multi-brand stores or stores selling varied product categories. Single-brand DTC stores (e.g., a shoe brand) typically do not need "Product A vs Product B" comparison tables.
 
-Tables achieve 2.5x citation rate vs. plain text.
+Check sampled pages for `<table>` elements with comparison semantics only when contextually relevant:
+- Multi-brand stores: comparison tables are valuable
+- Single-brand stores: material/spec comparison across product lines can help, but absence is NOT a finding
+- Blog/guide content: comparison tables in buying guides are valuable
 
-- Severity: HIGH
+- Severity: **CONDITIONAL** — HIGH for multi-brand stores, LOW/informational for single-brand DTC stores
 
 ### 5.3 Structured Lists
 
 Check for `<ul>` and `<ol>` elements with 5-7 items near headings.
 
-Listicles make up 50% of top AI citations.
+Structured lists can improve extractability when they summarize benefits, steps, or comparisons cleanly.
 
 - Severity: MEDIUM
 
@@ -254,7 +241,7 @@ Listicles make up 50% of top AI citations.
 
 Check sampled page word counts:
 - Pages under 300 words are thin for GEO purposes
-- 2000+ word pages get cited 3x more by AI engines
+- Deep pages often have more surface area for extractable facts and citations
 - Collection pages with buying guide content below the product grid are especially valuable
 
 - Severity: MEDIUM
@@ -267,7 +254,7 @@ Check for clean heading structure:
 - H3s nested under H2s
 - No skipped levels
 
-Pages with clean heading structure earn 2.8x higher AI citation rates.
+Clean heading structure makes page sections easier to parse and cite accurately.
 
 - Severity: MEDIUM
 
@@ -279,8 +266,7 @@ Pages with clean heading structure earn 2.8x higher AI citation rates.
 
 Check `updated_at` field from `/products.json`:
 - Products not updated in 6+ months may signal stale catalog
-- AI-cited content is 25.7% fresher than traditional organic results
-- 76.4% of ChatGPT's most-cited pages updated in last 30 days
+- Recently updated products can signal that availability, pricing, and merchandising information is current
 
 - Severity: MEDIUM
 
@@ -295,6 +281,6 @@ If blog exists, check most recent article publish date from sitemap or blog page
 ### 6.3 Schema Freshness Signals
 
 Check for `dateModified` property in JSON-LD (Article, Product, WebPage schemas).
-This is the strongest technical freshness signal for AI engines.
+This is a useful machine-readable freshness signal when it matches visible page updates.
 
 - Severity: MEDIUM
