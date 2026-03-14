@@ -214,4 +214,3 @@ Every tag creates URLs like `/collections/{collection-handle}/{tag}`. These are 
 - **Check:** Group tags by `toLowerCase().trim()`. Multiple original forms = inconsistency.
 - **Threshold:** Zero tolerance
 - **Impact:** Creates separate filter pages per variant, multiplying duplicate content.
-

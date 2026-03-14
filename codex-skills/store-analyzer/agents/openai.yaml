@@ -1,4 +1,0 @@
-interface:
-  display_name: "Store Analyzer"
-  short_description: "Audit Shopify SEO, GEO, and AEO visibility"
-  default_prompt: "Use $store-analyzer to audit this Shopify store's SEO, GEO, and AEO readiness from public storefront data."

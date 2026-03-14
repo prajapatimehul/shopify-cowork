@@ -1,16 +1,11 @@
 ---
 name: store-analyzer
 description: Comprehensive Shopify store audit covering SEO, GEO (AI visibility), and AEO (answer engine readiness). Use when a user asks to audit, analyze, review, or check any Shopify store's search visibility, AI readiness, or discoverability. Covers traditional search optimization, AI engine citation-worthiness, and answer/snippet readiness from public data only. Do not use for non-Shopify sites, backlink audits, local SEO, paid ads analysis, or generic copywriting.
-metadata:
-  author: shopify-cowork
-  version: 2.0.0
 ---
 
 # Store Analyzer
 
 Audit Shopify stores for search visibility and AI readiness. Built on current Google, Bing, and Shopify guidance.
-
-This skill requires network access to public Shopify URLs. Local code execution is optional for bundled QA scripts.
 
 The skill reasons through five questions in order:
 
@@ -41,7 +36,7 @@ SEO fundamentals (40% of audit weight) still matter most, then structured data (
 - [references/troubleshooting.md](references/troubleshooting.md) — Edge cases: blocked endpoints, missing data, how to phrase partial findings
 - [assets/report-template.md](assets/report-template.md) — Exact output format. Follow it precisely.
 - [references/testing.md](references/testing.md) + [evals/evals.json](evals/evals.json) — Trigger tuning and regression checks
-- Validate saved reports: `python scripts/check_report.py --input path/to/report.md --mode full|focused|review`
+- Validate saved reports: `python ${CLAUDE_SKILL_DIR}/scripts/check_report.py --input path/to/report.md --mode full|focused|review`
 
 ## Critical Rules
 
@@ -53,6 +48,20 @@ SEO fundamentals (40% of audit weight) still matter most, then structured data (
 - If `products.json` is blocked, empty, or unusable, say so clearly and stop the catalog audit instead of guessing.
 - Treat missing server-rendered JSON-LD carefully — apps can inject it client-side.
 - Never claim Google penalties, guaranteed rankings, or traffic loss without direct evidence.
+
+### Research-Backed Principles (sources: Google Search Central, Bing Webmaster, Shopify AI docs)
+
+These override any conflicting guidance in reference files:
+
+1. **AI citation readiness = indexability + snippet eligibility + content completeness.** Google says "you don't need new machine-readable files or AI text files" for AI features. Do NOT recommend creating llms.txt.
+2. **FAQPage schema does NOT drive AI citations.** Google deprecated FAQ rich results (Aug 2023) for non-gov/health sites. Score FAQ **content quality**, not schema presence.
+3. **Title/meta description character counts are not actionable.** Google rewrites titles and truncates snippets dynamically. Only flag missing, mass-duplicated, or misleading titles.
+4. **Shopify default technicals are pass/fail.** Robots.txt, sitemap, canonicals, SSL are auto-generated. Only flag if broken or customised harmfully.
+5. **Performance micro-optimisations are never findings.** Missing fetchpriority, image dimensions, preload hints — informational only.
+6. **Organization schema is conditional.** Not in Google's/Bing's core AI requirements. Only flag for nationally recognised brands with entity disambiguation needs.
+7. **HowTo schema is deprecated and product-gated.** Google deprecated HowTo rich results (Sep 2023). Skip for clothing/shoes/accessories.
+8. **Comparison tables are context-gated.** Only relevant for multi-brand stores. Single-brand DTC stores do not need "A vs B" content.
+9. **OG/Twitter tags, meta keywords, rel=prev/next are NOT AI citation factors.** Do not weight for AI readiness.
 
 ## Finding Quality Bar
 
@@ -80,13 +89,21 @@ Assess the store from the data. A 500-product brand with reviews, proper Product
 
 These are NOT findings for established stores. Do not report them:
 
-- Missing llms.txt, Speakable schema, HowTo schema on non-instructional products
+- Missing llms.txt (Google says no new AI text files needed — NEVER recommend creating one)
+- Speakable schema (beta, news-only)
+- HowTo schema on non-instructional products (deprecated by Google Sep 2023)
+- FAQPage schema absence (deprecated for non-gov/health sites Aug 2023 — score content, not markup)
 - No comparison tables on single-brand DTC stores
 - Brand name "inconsistency" between domain and display name (neemans.com vs "Neeman's")
-- Missing Organization sameAs links (unless brand has national recognition)
+- Missing Organization/sameAs links (unless brand has national recognition)
 - No Knowledge Panel (most DTC brands don't have one)
-- Missing fetchpriority/image dimensions (mention in passing, not a finding)
+- Missing fetchpriority/image dimensions/preload hints (micro-optimisations, never a finding)
+- Title/meta description character-count violations (Google rewrites freely)
+- OG/Twitter tag completeness (social preview, not AI citation factor)
+- Meta keywords tag (Google explicitly ignores)
+- rel=prev/next pagination (Google no longer uses)
 - Blog freshness thresholds (unless blog is a core traffic channel)
+- Default Shopify robots.txt/sitemap/SSL being "present" (these are auto-generated, not achievements)
 
 ### Merge related issues
 
@@ -138,7 +155,7 @@ Nothing else. No EXECUTIVE SUMMARY, no DIMENSION SUMMARY, no SCORECARD, no SEO/G
 
 ### 3. Collect catalog-wide data
 
-Fetch:
+Fetch (using WebFetch, browser tools, or equivalent HTTP access):
 
 1. `https://{domain}/meta.json`
 2. `https://{domain}/products.json?limit=250&page={n}` — paginate until < 250 returned
@@ -182,7 +199,7 @@ Use [assets/report-template.md](assets/report-template.md). Include: BOTTOM LINE
 ### 8. Validate
 
 - Use [references/troubleshooting.md](references/troubleshooting.md) if data was partial.
-- If saved to file, run `scripts/check_report.py --input path/to/report.md --mode full|focused|review`.
+- If saved to file, run `python ${CLAUDE_SKILL_DIR}/scripts/check_report.py --input path/to/report.md --mode full|focused|review`.
 
 ### 9. Hand off implementation
 

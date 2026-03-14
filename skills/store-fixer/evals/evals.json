@@ -1,0 +1,41 @@
+{
+  "skill_name": "store-fixer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Take this Shopify analyzer report and implement the top 3 fixes on the store",
+      "expected_output": "A response that first presents the exact proposed changes, rollback plan, and approval gate. It should execute only after explicit approval, then report verification plus rollback.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Fix the missing FAQ schema and robots rules on this Shopify store",
+      "expected_output": "A theme-oriented plan that names the exact files and theme target, asks for approval before push, and includes preview verification plus rollback.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Update these product titles and descriptions in Shopify using authenticated access",
+      "expected_output": "An Admin API workflow with exact object scope, approval before mutation, safe write steps, verification, and rollback data capture.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "What access does the client need before we can fix this Shopify store?",
+      "expected_output": "A plan-only response that separates theme access from Admin API access, lists exact merchant asks, and names the minimum scopes required.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Review these Shopify changes and tell me if the fixes were applied correctly",
+      "expected_output": "A review-mode response that verifies existing changes instead of blindly reimplementing them.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Audit this Shopify store for AI visibility and SEO issues",
+      "expected_output": "This should not trigger store-fixer. It should route to store-analyzer because the user asked for analysis, not execution.",
+      "files": []
+    }
+  ]
+}
