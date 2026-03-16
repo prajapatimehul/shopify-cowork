@@ -85,9 +85,9 @@ Check for:
 - Description in schema matching visible product description
 - Server-rendered JSON-LD (not JavaScript-injected) — Google requires SSR for merchant listings
 
-**Framing:**
-- Strong: sampled pages appear ineligible or weakly eligible for merchant listing enhancements.
-- Moderate: markup exists but recommended fields are thin or inconsistent.
+**Framing (use business language):**
+- Strong: "Google can't show star ratings, shipping badges, or return policy info for your products in search results — because the required data fields are missing from your product markup."
+- Moderate: "Google can show basic product info in search, but shoppers won't see reviews, shipping speed, or return policy — which means lower click-through rates vs. competitors who have them."
 - Caution: if JSON-LD is absent from server-rendered HTML, say it may be client-side and recommend Google Rich Results Test.
 
 ---
@@ -110,8 +110,8 @@ Check sampled pages for:
 - Meta description "over 160 characters" — Google truncates dynamically, no fixed limit
 - Character-count ranges as findings — these are not actionable
 
-**Framing:**
-- Strong: missing or mass-duplicated titles/descriptions mean Google must guess intent — flag this.
+**Framing (use business language):**
+- Strong: "When someone Googles your product category, your search result has the same generic title as 200 other pages — so shoppers have no reason to click yours over a competitor's."
 - Lower: titles are present and differentiated but not "optimised" — do not flag as a finding.
 
 ---
@@ -135,8 +135,8 @@ Check `<a>` tags on collection pages linking to products. Shopify themes using `
 - Sort parameter URLs not blocked or canonicalized
 - Paginated collection pages — check if page 2+ canonicalizes properly
 
-**Framing:**
-- Strong: internal links and crawl rules expose multiple URL forms for the same content.
+**Framing (use business language):**
+- Strong: "Google sees two different URLs for the same product and has to guess which one to show — this splits your ranking power between them instead of concentrating it on one page."
 - Avoid: `duplicate content penalty`. Better framing: diluted consolidation, crawl waste, mixed signals.
 
 ---
@@ -188,8 +188,8 @@ Measure from `/products.json` catalog-wide:
 | Products with zero images | `images.length === 0` |
 | Products with single image only | `images.length === 1` (best practice is 3+) |
 
-**Framing:**
-- Strong: empty or thin product pages give Google little unique text to rank.
+**Framing (use business language):**
+- Strong: "X% of your products have little or no description — Google has nothing to rank them for, and shoppers can't make a buying decision. These pages are effectively invisible in search."
 - Collection pages usually outrank isolated product pages for category intent, so product hygiene should not outrank collection content gaps.
 
 ---
@@ -207,10 +207,9 @@ Measure from `/collections.json` catalog-wide:
 | Generic collection titles | Titles like "Sale", "All", "Products", "New" miss keyword opportunities |
 | Missing collection images | `image` null |
 
-**Framing:**
-- This is often the highest-leverage ecommerce finding.
-- Collection pages are the best organic landing pages for category-intent searches.
-- A store with 50 products and 3 collections is leaving ranking opportunities on the table.
+**Framing (use business language):**
+- "Collection pages are your best chance to rank when someone searches for a product category like 'gold jhumkas' or 'oxidized earrings'. With only {n} collections for {n} products, you're missing the pages that would bring in category shoppers."
+- This is often the highest-leverage ecommerce finding. A store with 50 products and 3 collections is leaving ranking opportunities on the table.
 
 ---
 
@@ -225,9 +224,9 @@ Check from sitemap and sampled articles:
 - Articles internally link to collections or products
 - Content is substantive (not auto-generated filler)
 
-**Framing:**
+**Framing (use business language):**
 - If no blog detected: `not detected from public sitemap data`.
-- If blog exists but articles are weak: note the missed internal-linking and topical authority opportunity.
+- If blog exists but articles are weak: "Your blog posts don't link to your products or collections — each article is a missed chance to send Google (and readers) to pages where they can actually buy."
 
 ---
 
@@ -276,6 +275,7 @@ Report but do not headline:
 - Open Graph tag issues — **not an AI citation factor**; social preview only
 - Twitter card issues — **not an AI citation factor**; social preview only
 - H1 count issues (multiple H1s or missing H1) — low priority, note only
+- **Dawn theme H1-on-logo** — Shopify's Dawn theme (800K+ stores, v15.0+) wraps the header logo/site title inside `<h1>` tags on every page. This means the store name is the H1 instead of the product title or collection name. Check if the homepage `<h1>` contains only the brand/logo rather than page-specific content. If found on product/collection pages, this is a **MEDIUM** finding — Google uses H1 to understand page topic, and a generic brand name H1 on every page weakens that signal. Detection: check if the `<h1>` text on product pages matches the store name rather than the product title.
 - URL handle quality — score only for unreadable/parameter-junk URLs, not keyword presence
 - Missing alt text on sampled images — gate to primary product images and images carrying essential info only (note: alt text is NOT in `/products.json`)
 - Empty `product_type` or messy vendor values (covered more deeply in catalog-checks.md)

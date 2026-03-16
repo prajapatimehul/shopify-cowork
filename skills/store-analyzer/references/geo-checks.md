@@ -52,9 +52,9 @@ Fetch `/robots.txt` and check for these user-agents:
 - `GPTBot`, `ClaudeBot`, and `Google-Extended` relate to training or model-use permissions.
 - `ChatGPT-User` and `Claude-User` are user-initiated fetch agents and should not be treated as automatic search crawlers.
 
-**Framing:**
-- If search-oriented bots are explicitly blocked: "Search-oriented AI crawlers are blocked in `robots.txt`, which likely reduces visibility in AI search experiences that rely on those crawlers."
-- If only training-oriented bots or tokens are blocked: "Training-oriented AI access is restricted, but that alone does not prove the store is excluded from AI search results."
+**Framing (use business language):**
+- If search-oriented bots are explicitly blocked: "When someone asks ChatGPT or Perplexity to recommend products like yours, your store can't be included — because your robots.txt blocks the AI crawlers that would read your pages."
+- If only training-oriented bots or tokens are blocked: "Your store blocks AI training crawlers, but that alone doesn't prevent you from appearing in AI search results — the search-specific crawlers are still allowed."
 - If no explicit AI bot directives are present: "No explicit AI crawler directives were found in `robots.txt`. Do not assume either blocking or visibility beyond what the file states."
 - Attribute findings to the live `robots.txt`, not to assumed Shopify defaults.
 - Severity: HIGH

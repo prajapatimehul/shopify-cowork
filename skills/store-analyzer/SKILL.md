@@ -167,13 +167,16 @@ Fetch (using WebFetch, browser tools, or equivalent HTTP access):
 
 ### 4. Collect sampled HTML
 
-Fetch ~12 representative pages:
+Fetch 30-50 representative pages for pattern detection at scale:
 
-- 5 product pages (varied handles, not just the first ones)
-- 3 collection pages
+- 15-20 product pages (varied handles, price points, and collections — not just the first ones)
+- 8-10 collection pages (prioritize collections with most products)
 - Homepage
-- 2 blog articles (if blog detected from sitemap)
+- 3-5 blog articles (if blog detected from sitemap)
 - 1 About page if it exists
+- 2-3 policy pages (shipping, returns, FAQ) if they exist
+
+More pages = better pattern detection for issues like mass-duplicated titles, inconsistent schema, and Dawn H1-on-logo across page types.
 
 Extract: title, meta description, canonical, H1, JSON-LD blocks, OG/Twitter tags, internal link patterns, external scripts, image attributes, question headings, lists/tables, review widget indicators.
 
