@@ -1,0 +1,12 @@
+{
+  "name": "shopify-cowork",
+  "description": "Shopify store audit and fix skills — SEO, GEO (AI visibility), AEO (answer engine), and Admin API fixes",
+  "version": "1.0.0",
+  "author": {
+    "name": "Mehul Prajapati"
+  },
+  "homepage": "https://github.com/prajapatimehul/shopify-cowork",
+  "repository": "https://github.com/prajapatimehul/shopify-cowork",
+  "license": "MIT",
+  "keywords": ["shopify", "seo", "ecommerce", "audit", "geo", "aeo"]
+}

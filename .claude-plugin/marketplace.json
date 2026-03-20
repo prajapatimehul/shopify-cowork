@@ -1,0 +1,17 @@
+{
+  "name": "shopify-cowork",
+  "owner": {
+    "name": "Mehul Prajapati"
+  },
+  "metadata": {
+    "description": "Shopify commerce skills for AI coding agents"
+  },
+  "plugins": [
+    {
+      "name": "shopify-cowork",
+      "source": ".",
+      "description": "Shopify store audit and fix skills — SEO, GEO, AEO, and Admin API fixes",
+      "version": "1.0.0"
+    }
+  ]
+}
