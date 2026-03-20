@@ -69,6 +69,29 @@ Some stores may add an additional blocking layer through CDN or WAF tooling. Clo
 
 ---
 
+## 1b. Shopify Agentic Storefront & MCP Readiness
+
+Shopify launched Agentic Storefronts (Summer 2025) enabling AI agents (ChatGPT, Copilot, Perplexity) to search products, create carts, and initiate checkout via MCP (Model Context Protocol) — without the customer ever visiting the website.
+
+Shopify also launched a Knowledge Base app that lets merchants control what information AI agents have about their store through customizable FAQs optimized for AI shopping chats.
+
+**Detection:** Check for signs of Agentic Storefront enablement:
+1. Fetch `https://{domain}/.well-known/shopify/mcp` or similar MCP endpoint — check if it returns a valid response
+2. Check for Shopify's Knowledge Base app indicators in page HTML or meta tags
+3. Check if the store's Shopify Storefront MCP server is accessible (products searchable by AI agents)
+
+**What to look for in the store's content:**
+- Does the store have clear, structured product data that AI agents can consume? (titles, descriptions, specs, pricing, availability)
+- Are FAQ/policy pages comprehensive enough for AI agents to answer common shopping questions?
+- Is the product catalog complete enough for AI agent-driven discovery?
+
+**Framing:**
+- If no Agentic Storefront signals detected: "Shopify's Agentic Storefronts let AI agents like ChatGPT recommend and sell your products directly in chat — without customers visiting your site. This store doesn't appear to have this enabled, which means AI shopping agents can't access your catalog."
+- If enabled: Note as a positive in SNAPSHOT.
+- Severity: MEDIUM — this is a forward-looking differentiator, not a current traffic driver for most stores. But it's the direction Shopify and AI commerce are heading.
+
+---
+
 ## 2. llms.txt
 
 **Research-backed guidance:** Google explicitly states "you don't need new machine-readable files or AI text files" to appear in AI features. There is no special schema or file required for AI Overviews/AI Mode. Do NOT recommend creating llms.txt as an action item. Do NOT treat its absence as a problem.

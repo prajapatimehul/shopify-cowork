@@ -128,7 +128,19 @@ Every product page must have `<link rel="canonical">` pointing to `/products/{ha
 
 Check `<a>` tags on collection pages linking to products. Shopify themes using `within: collection` in Liquid generate `/collections/{collection}/products/{handle}` links. These dilute link equity toward non-canonical URLs.
 
-### 3.3 Other Canonical Issues
+### 3.3 Tag Page Thin Content
+
+Shopify tag pages (`/collections/{collection}/{tag}`) can create massive thin content problems:
+- Each tag generates a filterable URL (e.g., `/collections/earrings/gold`, `/collections/earrings/silver`)
+- These pages typically have no unique title, no unique description, and no unique content — just a filtered subset of the parent collection
+- Stores with many tags can generate hundreds or thousands of thin indexed pages
+
+**Detection:** Check the sitemap for URLs matching `/collections/*/` patterns beyond the main collection handles. Cross-reference with `robots.txt` — Shopify's default blocks `/collections/*+*` (multi-tag combos) but single-tag pages may still be indexable. Also check sampled tag page HTML for missing or duplicated titles/descriptions.
+
+- If hundreds of tag pages exist with no unique content: "Your store has {n} tag-filtered collection pages indexed with no unique descriptions — Google sees these as thin, duplicate content that dilutes your collection pages' ranking power."
+- Severity: HIGH (when hundreds exist), MEDIUM (when dozens exist)
+
+### 3.4 Other Canonical Issues
 
 - Inconsistent protocol or host in canonicals
 - Tag or filter URL patterns creating duplicates (`/collections/{handle}/{tag}`)
@@ -159,6 +171,15 @@ Shopify's default blocks:
 | `/policies/` | Auto-generated policy pages |
 
 **Pass/fail:** If these rules are present (Shopify default), mark as passing and move on. Only flag as a finding if rules are missing due to customisation or if critical paths are accidentally blocked.
+
+### 4.1b Storebot-Google Access
+
+Google operates a dedicated shopping crawler (`Storebot-Google`, user-agent token `Storebot-Google`) separate from Googlebot. It crawls product pages specifically for Google Shopping surfaces including AI Shopping features.
+
+**Detection:** Check `robots.txt` for any `User-agent: Storebot-Google` directive with `Disallow`. Also check for broad wildcard blocks that might inadvertently catch it.
+
+- If blocked: "Google's Shopping crawler is blocked — your products won't appear in Google Shopping results, product carousels, or AI Shopping recommendations."
+- Severity: HIGH
 
 ### 4.2 Sitemap Checks
 
