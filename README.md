@@ -40,11 +40,45 @@ cp -r skills/store-fixer .claude/skills/store-fixer
 
 ### Codex
 
+**Option A — Skill installer (recommended):**
+
+```bash
+python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo prajapatimehul/shopify-cowork \
+  --path skills/store-analyzer skills/store-fixer
+```
+
+Installs to `~/.codex/skills/store-analyzer` and `~/.codex/skills/store-fixer`. Restart Codex after installing.
+
+**Option B — Manual copy:**
+
+```bash
+# Clone the repo
+git clone https://github.com/prajapatimehul/shopify-cowork.git
+cd shopify-cowork
+
+# Copy to Codex skills directory
+cp -r skills/store-analyzer ~/.codex/skills/store-analyzer
+cp -r skills/store-fixer ~/.codex/skills/store-fixer
+```
+
+**Option C — Project-level (per-repo):**
+
 ```bash
 cp -r skills/store-analyzer .agents/skills/store-analyzer
 ```
 
 Or clone the repo — `.agents/skills/` symlinks are included.
+
+**After installing, use naturally:**
+
+```
+Audit this Shopify store: example.com
+Check if this store is visible to ChatGPT and Perplexity
+Plan fixes for SEO issues in my Shopify store
+```
+
+> **Note:** `store-analyzer` uses public data only. `store-fixer` makes authenticated Shopify changes and requires explicit approval before every write.
 
 ### Cursor
 
