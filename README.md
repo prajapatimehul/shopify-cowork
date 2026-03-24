@@ -1,141 +1,69 @@
 # Shopify Cowork Skills
 
-Packaged agent skills for auditing and improving Shopify stores. Works as a **Claude Code plugin**, standalone **Agent Skills** (Codex, Cursor, Gemini CLI), or via **Claude Agent SDK**.
+AI skills that audit and fix Shopify stores. Works with **Claude Code**, **Codex**, **Cursor**, **Gemini CLI**, or any skill-compatible AI platform.
 
-Built on the [Agent Skills Open Standard](https://agentskills.io/specification).
+## What it does
 
-## Skills
+**store-analyzer** audits any Shopify store from public data. 8 modules:
 
-- **store-analyzer**: Public-data audit for Shopify SEO, GEO (AI visibility), and AEO (answer engine readiness). No authentication required.
-- **store-fixer**: Authenticated implementation skill for Shopify data and theme changes, with explicit approval and rollback.
+| Module | What it checks |
+|--------|---------------|
+| Trust & Credibility | Logo, favicon, contact info, about page, branded email, policies |
+| Conversion | Hero CTA, cart type, cross-sells, size charts, shipping info, reviews |
+| Page Speed | Core Web Vitals via PageSpeed API, third-party script count |
+| Technical SEO | Crawlability, robots, sitemap, canonicals, internal linking |
+| Product-Page SEO | Titles, descriptions, headings, content depth, images |
+| Structured Data | Product/Offer schema, merchant listings, review markup |
+| AEO | FAQ content, policy clarity, answer-engine readiness |
+| GEO | AI bot access, citation-worthiness, content extractability |
 
-```
-Audit this Shopify store: example.com
-Check if this store is visible to ChatGPT and Perplexity
-Review this SEO audit and tell me what's real
-```
+**store-fixer** implements fixes via Shopify Admin API with explicit approval before every write.
 
-## Installation
+## Real findings from real stores
 
-### Claude Code (plugin — recommended)
+Tested on 6 stores from Shopify Community forums:
+
+- A store showing **509 reviews on a 2-week-old site** (zero actual review text)
+- An apparel store selling S-4XL with **no size chart**
+- A jewelry store with **43 testimonials trapped on a static page** — not in schema, not on product pages
+- A kids blanket store where **Google thinks the brand is "Printify"** because the vendor field feeds JSON-LD
+- A stationery store with **17 collection descriptions written but the theme doesn't render them**
+
+## Install
 
 ```bash
+# Claude Code (plugin)
 /plugin marketplace add prajapatimehul/shopify-cowork
 /plugin install shopify-cowork@shopify-cowork
-```
 
-Skills appear as `/shopify-cowork:store-analyzer` and `/shopify-cowork:store-fixer`.
-
-### Claude Code (manual)
-
-```bash
-# Personal (available across all projects)
+# Claude Code (manual)
 cp -r skills/store-analyzer ~/.claude/skills/store-analyzer
-cp -r skills/store-fixer ~/.claude/skills/store-fixer
 
-# Project (shared via git)
-cp -r skills/store-analyzer .claude/skills/store-analyzer
-cp -r skills/store-fixer .claude/skills/store-fixer
-```
-
-### Codex
-
-**Option A — Skill installer (recommended):**
-
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo prajapatimehul/shopify-cowork \
-  --path skills/store-analyzer skills/store-fixer
-```
-
-Installs to `~/.codex/skills/store-analyzer` and `~/.codex/skills/store-fixer`. Restart Codex after installing.
-
-**Option B — Manual copy:**
-
-```bash
-# Clone the repo
-git clone https://github.com/prajapatimehul/shopify-cowork.git
-cd shopify-cowork
-
-# Copy to Codex skills directory
+# Codex
 cp -r skills/store-analyzer ~/.codex/skills/store-analyzer
-cp -r skills/store-fixer ~/.codex/skills/store-fixer
-```
 
-**Option C — Project-level (per-repo):**
-
-```bash
-cp -r skills/store-analyzer .agents/skills/store-analyzer
-```
-
-Or clone the repo — `.agents/skills/` symlinks are included.
-
-**After installing, use naturally:**
-
-```
-Audit this Shopify store: example.com
-Check if this store is visible to ChatGPT and Perplexity
-Plan fixes for SEO issues in my Shopify store
-```
-
-> **Note:** `store-analyzer` uses public data only. `store-fixer` makes authenticated Shopify changes and requires explicit approval before every write.
-
-### Cursor
-
-```bash
+# Cursor
 cp -r skills/store-analyzer .cursor/skills/store-analyzer
-```
 
-### Gemini CLI
-
-```bash
+# Gemini CLI
 cp -r skills/store-analyzer .gemini/skills/store-analyzer
 ```
 
-### Claude Agent SDK
+Then just ask naturally:
 
-```python
-from claude_agent_sdk import query, ClaudeAgentOptions
-
-options = ClaudeAgentOptions(
-    cwd="/path/to/project",  # Must contain .claude/skills/
-    setting_sources=["user", "project"],
-    allowed_tools=["Skill", "Read", "Write", "Bash", "WebFetch"],
-)
-
-async for message in query(prompt="Audit this Shopify store: example.com", options=options):
-    print(message)
+```
+Audit this Shopify store: example.com
+Check if this store is visible to ChatGPT and Perplexity
 ```
 
-### claude.ai
+## Repo structure
 
-1. Zip the skill: `cd skills && zip -r store-analyzer.zip store-analyzer/`
-2. Go to **Settings > Features** in claude.ai
-3. Upload the zip file
-
-## Repo Structure
-
-```text
-.claude-plugin/          # Claude Code plugin manifest
-  plugin.json
-  marketplace.json
-.agents/skills/          # Cross-platform skill discovery (Codex, Cursor, etc.)
-  store-analyzer -> ../../skills/store-analyzer
-  store-fixer -> ../../skills/store-fixer
-skills/                  # Canonical skill packages
-  store-analyzer/
-    SKILL.md
-    references/
-    assets/
-    evals/
-    scripts/
-  store-fixer/
-    SKILL.md
-    references/
-    assets/
-    scripts/
-research/                # Design docs for future skills (not installable)
-  skills/
+```
+skills/
+  store-analyzer/    # 8-module public-data audit (SKILL.md + references)
+  store-fixer/       # Authenticated fixes via Admin API (SKILL.md + references)
+.claude-plugin/      # Claude Code plugin manifest
+.agents/skills/      # Cross-platform skill discovery symlinks
 ```
 
 ## License
