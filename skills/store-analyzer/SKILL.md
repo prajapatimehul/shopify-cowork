@@ -1,34 +1,42 @@
 ---
 name: store-analyzer
-description: Comprehensive Shopify store audit covering SEO, GEO (AI visibility), and AEO (answer engine readiness). Use when a user asks to audit, analyze, review, or check any Shopify store's search visibility, AI readiness, or discoverability. Covers traditional search optimization, AI engine citation-worthiness, and answer/snippet readiness from public data only. Do not use for non-Shopify sites, backlink audits, local SEO, paid ads analysis, or generic copywriting.
+description: Comprehensive Shopify store audit covering conversion, trust, speed, SEO, and AI visibility. Use when a user asks to audit, analyze, review, or check any Shopify store. Covers what real store reviewers check — CRO, UX, trust signals, page speed, search optimization, and AI readiness — all from public data. Do not use for non-Shopify sites, backlink audits, local SEO, paid ads analysis, or generic copywriting.
 ---
 
 # Store Analyzer
 
-Audit Shopify stores for search visibility and AI readiness. Built on current Google, Bing, and Shopify guidance.
+The most comprehensive public-data Shopify store audit. Built on what 50+ real store reviewers actually check (Shopify Community research, March 2026) plus current Google, Bing, and Shopify guidance.
 
-The skill reasons through five questions in order:
+The skill reasons through eight questions in order:
 
-1. **Can search engines crawl and understand the store?** (Technical SEO)
-2. **Can Google create rich ecommerce results from the pages?** (Structured Data)
-3. **Can an AI agent answer common shopping questions from the content?** (AEO)
-4. **Is the content strong enough to be cited, not just indexed?** (GEO)
-5. **Are product data and merchant signals consistent enough to trust?** (Commercial Completeness)
+1. **Would a first-time visitor trust this store enough to buy?** (Trust & Credibility)
+2. **Does the store convert browsers into buyers?** (CRO & Conversion)
+3. **Is the store fast enough to keep visitors?** (Page Speed)
+4. **Can search engines crawl and understand the store?** (Technical SEO)
+5. **Do product pages rank and convert from search?** (Product-Page SEO)
+6. **Can Google create rich ecommerce results from the pages?** (Structured Data)
+7. **Can an AI agent answer common shopping questions from the content?** (AEO)
+8. **Is the content strong enough to be cited, not just indexed?** (GEO)
 
-## Five Audit Modules
+## Eight Audit Modules
 
 | Module | What it measures | Reference |
 |---|---|---|
+| Trust & Credibility | Logo, favicon, about page, contact completeness, branded email, footer, payment icons, policy transparency, social links | [trust-ux-checks.md](references/trust-ux-checks.md) §1-4 |
+| CRO & Conversion | Hero CTA, cart type, cross-sells, shipping bar, size charts, trust badges near ATC, express checkout, review widget, email capture, urgency elements | [cro-checks.md](references/cro-checks.md) §1-5 |
+| Page Speed | Core Web Vitals (LCP, CLS, FCP), mobile performance score, third-party script count, image loading strategy | [trust-ux-checks.md](references/trust-ux-checks.md) §5 |
 | Technical SEO | Crawlability, robots, sitemap, canonicals, internal linking, crawl efficiency | [seo-checks.md](references/seo-checks.md) §3-4, 8-9 |
 | Product-Page SEO | Titles, meta descriptions, headings, content depth, image coverage | [seo-checks.md](references/seo-checks.md) §1-2, 5-7 |
 | Structured Data & Merchant Readiness | Product/Offer schema, merchant listing fields, review markup, Organization, identifiers | [seo-checks.md](references/seo-checks.md) §1 + [catalog-checks.md](references/catalog-checks.md) |
 | AEO Readiness | FAQ content, policy/shipping/returns clarity, product specs, Q&A format, answer blocks | [aeo-checks.md](references/aeo-checks.md) |
 | GEO Citation Readiness | AI bot access, unique content, brand identity, trust signals, content extractability | [geo-checks.md](references/geo-checks.md) |
 
-SEO fundamentals (40% of audit weight) still matter most, then structured data (25%), answer coverage (20%), and AI citation (15%).
+Conversion & trust (40% of audit weight) matter most — these are what real reviewers flag first. Then SEO fundamentals (25%), structured data (15%), and AI readiness (20%).
 
 ## Bundled Resources
 
+- [references/cro-checks.md](references/cro-checks.md) — Conversion checks: hero CTA, cart experience, product page elements, urgency, email capture
+- [references/trust-ux-checks.md](references/trust-ux-checks.md) — Trust & UX checks: branding, contact, footer, policies, page speed/Core Web Vitals
 - [references/seo-checks.md](references/seo-checks.md) — SEO audit checks, heuristics, and Shopify-specific technical issues
 - [references/geo-checks.md](references/geo-checks.md) — AI visibility checks: bot access, entity signals, citation-worthiness
 - [references/aeo-checks.md](references/aeo-checks.md) — Answer engine checks: snippets, FAQ schema, voice search, PAA
@@ -119,31 +127,32 @@ Follow [assets/report-template.md](assets/report-template.md) EXACTLY. The allow
 
 1. `STORE ANALYSIS — {domain}`
 2. `BOTTOM LINE` — biggest issue + quick win
-3. `SNAPSHOT` — store facts in one block
+3. `SNAPSHOT` — store facts + speed + trust signals in one block
 4. `FINDINGS` — flat list ordered by business impact, NOT grouped by dimension
 5. `SAMPLE FIXES` — 2-3 real examples with Problem/Fix/Result
-6. `AI-FACING GAPS` — questions AI agents cannot answer from this store's content
+6. `CONVERSION GAPS` — missing elements real shoppers expect
+7. `AI-FACING GAPS` — questions AI agents cannot answer from this store's content
 
-Nothing else. No EXECUTIVE SUMMARY, no DIMENSION SUMMARY, no SCORECARD, no SEO/GEO/AEO FINDINGS headers, no TOP ACTIONS, no WHAT'S WORKING checkmark lists, no scores, no sign-off paragraphs, no "This is a diagnostic benchmark."
+Nothing else. No EXECUTIVE SUMMARY, no DIMENSION SUMMARY, no SCORECARD, no SEO/GEO/AEO/CRO FINDINGS headers, no TOP ACTIONS, no WHAT'S WORKING checkmark lists, no scores, no sign-off paragraphs, no "This is a diagnostic benchmark."
 
 ### Format rules
 
-- Full audit: **80-140 lines max**. If you exceeded 140 lines, you wrote too much.
+- Full audit: **70-160 lines max**. If you exceeded 160 lines, you wrote too much.
 - Each finding: exactly **4 lines** — Scope, Proof, Fix, Impact. One line each.
 - Proof = ONE line with exact data (numbers, not adjectives).
 - Fix = ONE concrete action in ONE line.
 - Impact = ONE line saying what improves.
 - SAMPLE FIXES: 2-3 items, each with Problem/Fix/Result (one line each).
 - AI-FACING GAPS: 4-6 specific questions AI agents can't answer from this store today.
-- NO checkmark lists (✓/✗). Findings list only what needs fixing.
-- NO scores or numerical ratings (no X/100, no X/Y). No SCORECARD section.
+- NO checkmark lists (✓/✗) in FINDINGS. The SNAPSHOT trust line is the only exception.
+- NO scores or numerical ratings (no X/100, no X/Y) in FINDINGS. SNAPSHOT speed metrics are raw data, not scores.
 - NO "What this means" explanations. The 4-line format is self-explanatory.
 
 ## Workflow
 
 ### 1. Confirm the task mode
 
-- `Full audit`: all five modules.
+- `Full audit`: all eight modules.
 - `Focused audit`: user wants a specific area (e.g., "check AI readiness" = GEO focus).
 - `Audit review`: user provided an existing audit; verify its claims.
 
@@ -155,7 +164,7 @@ Nothing else. No EXECUTIVE SUMMARY, no DIMENSION SUMMARY, no SCORECARD, no SEO/G
 
 ### 3. Collect catalog-wide data
 
-Fetch (using WebFetch, browser tools, or equivalent HTTP access):
+Fetch using any available method (HTTP requests, browser, CLI curl):
 
 1. `https://{domain}/meta.json`
 2. `https://{domain}/products.json?limit=250&page={n}` — paginate until < 250 returned
@@ -165,24 +174,43 @@ Fetch (using WebFetch, browser tools, or equivalent HTTP access):
 6. `https://{domain}/sitemap.xml`
 7. `https://{domain}/llms.txt`
 
-### 4. Collect sampled HTML
+### 4. Collect sampled HTML + CRO/trust/speed data
 
-Fetch 30-50 representative pages for pattern detection at scale:
+Fetch 30-50 representative pages. Extract ALL signals in one pass per page — SEO, CRO, and trust checks all run against the same HTML. Do not fetch any page twice.
 
-- 15-20 product pages (varied handles, price points, and collections — not just the first ones)
+**Pages to fetch:**
+- 15-20 product pages (varied handles, price points, and collections)
 - 8-10 collection pages (prioritize collections with most products)
-- Homepage
+- Homepage, about page, contact page
 - 3-5 blog articles (if blog detected from sitemap)
-- 1 About page if it exists
-- 2-3 policy pages (shipping, returns, FAQ) if they exist
+- Policy pages (shipping, returns, FAQ)
 
-More pages = better pattern detection for issues like mass-duplicated titles, inconsistent schema, and Dawn H1-on-logo across page types.
+**Extract from every page:** title, meta description, canonical, H1, JSON-LD blocks, OG/Twitter tags, internal link patterns, external scripts, image attributes, question headings, lists/tables.
 
-Extract: title, meta description, canonical, H1, JSON-LD blocks, OG/Twitter tags, internal link patterns, external scripts, image attributes, question headings, lists/tables, review widget indicators.
+**Additionally extract per [cro-checks.md](references/cro-checks.md) and [trust-ux-checks.md](references/trust-ux-checks.md):**
+- Homepage: hero CTA buttons + text, hero heading, footer (payment icons, policy links, social links, newsletter form), email capture scripts, chat widget scripts
+- Product pages: cart drawer/redirect indicators, trust badges near ATC, size chart links, shipping info blocks, return policy blocks, express checkout buttons, review widget + star ratings, image count, product badges
+- Contact page: phone, address, email domain, contact form, chat widget
+- About page: word count, real content vs placeholder
 
-### 5. Analyze across all five modules
+**Page speed (separate API call):**
+- `curl "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://{domain}&category=performance&strategy=mobile"`
+- Extract: performance score, LCP, CLS, FCP. Count third-party `<script>` tags on homepage.
+- If PSI returns non-200 or times out after 30 seconds, report "PageSpeed data unavailable" in SNAPSHOT and skip speed findings. Do not retry more than once.
 
-Run checks from each reference file across all five modules. The reference files are comprehensive checklists — not every failed check becomes a finding. Use the Finding Quality Bar to determine which issues earn a spot in the FINDINGS section.
+### 5. Analyze across all eight modules
+
+Use the data already collected in Steps 3-4. Do not fetch additional pages unless a specific check requires a page not yet sampled. Run checks from each reference file across all eight modules. Start with Trust & CRO — these are what real store reviewers flag first and what store owners care most about. The reference files are comprehensive checklists — not every failed check becomes a finding. Use the Finding Quality Bar to determine which issues earn a spot in the FINDINGS section.
+
+**Module priority order:**
+1. Trust & Credibility → [trust-ux-checks.md](references/trust-ux-checks.md) §1-4
+2. CRO & Conversion → [cro-checks.md](references/cro-checks.md) §1-5
+3. Page Speed → [trust-ux-checks.md](references/trust-ux-checks.md) §5
+4. Technical SEO → [seo-checks.md](references/seo-checks.md) §3-4, 8-9
+5. Product-Page SEO → [seo-checks.md](references/seo-checks.md) §1-2, 5-7
+6. Structured Data → [seo-checks.md](references/seo-checks.md) §1 + [catalog-checks.md](references/catalog-checks.md)
+7. AEO Readiness → [aeo-checks.md](references/aeo-checks.md)
+8. GEO Citation → [geo-checks.md](references/geo-checks.md)
 
 ### 6. Select findings
 
@@ -197,7 +225,7 @@ Order by business impact, not by dimension.
 
 ### 7. Write the report
 
-Use [assets/report-template.md](assets/report-template.md). Include: BOTTOM LINE, SNAPSHOT, FINDINGS, SAMPLE FIXES, AI-FACING GAPS.
+Use [assets/report-template.md](assets/report-template.md). Include: BOTTOM LINE, SNAPSHOT, FINDINGS, SAMPLE FIXES, CONVERSION GAPS, AI-FACING GAPS.
 
 ### 8. Validate
 
@@ -224,7 +252,7 @@ When verifying an existing audit, classify each claim as:
 ## Examples
 
 **Example 1**: `Audit this Shopify store: neemans.com`
-Result: Full 5-module audit with 4-5 focused findings and AI-facing gaps.
+Result: Full 8-module audit with 4-5 focused findings, conversion gaps, and AI-facing gaps.
 
 **Example 2**: `Check AI visibility for this store`
 Result: GEO-focused audit — AI bot access, entity signals, content extractability, citation readiness.
