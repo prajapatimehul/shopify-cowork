@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "shopify-cowork",
-      "source": ".",
+      "source": "./",
       "description": "Shopify store audit and fix skills — SEO, GEO, AEO, and Admin API fixes",
       "version": "1.0.0"
     }
