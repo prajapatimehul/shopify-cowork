@@ -1,9 +1,10 @@
 {
   "name": "shopify-cowork",
-  "description": "Audit and fix Shopify stores. Skills for trust, CRO, speed, SEO, structured data, AEO, and GEO — plus authenticated fixes via the Admin API.",
   "version": "1.0.0",
+  "description": "Audit and fix Shopify stores. Skills for trust, CRO, speed, SEO, structured data, AEO, and GEO — plus authenticated fixes via the Admin API.",
   "author": {
-    "name": "Mehul Prajapati"
+    "name": "Mehul Prajapati",
+    "url": "https://github.com/prajapatimehul"
   },
   "homepage": "https://github.com/prajapatimehul/shopify-cowork",
   "repository": "https://github.com/prajapatimehul/shopify-cowork",
@@ -15,6 +16,9 @@
     "audit",
     "geo",
     "aeo",
-    "cro"
-  ]
+    "cro",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
 }

@@ -9,9 +9,11 @@
   "plugins": [
     {
       "name": "shopify-cowork",
-      "source": "./",
-      "description": "Shopify store audit and fix skills — SEO, GEO, AEO, and Admin API fixes",
-      "version": "1.0.0"
+      "source": "./plugins/shopify-cowork",
+      "description": "Audit and fix Shopify stores. Skills for trust, CRO, speed, SEO, structured data, AEO, and GEO — plus authenticated fixes via the Admin API.",
+      "version": "1.0.0",
+      "category": "commerce",
+      "tags": ["shopify", "seo", "ecommerce", "cro", "geo", "aeo"]
     }
   ]
 }

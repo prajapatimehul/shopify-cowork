@@ -3,17 +3,33 @@
   "version": "1.0.0",
   "description": "Audit and fix Shopify stores. Skills for trust, CRO, speed, SEO, structured data, AEO, and GEO — plus authenticated fixes via the Admin API.",
   "author": {
-    "name": "Mehul Prajapati"
+    "name": "Mehul Prajapati",
+    "url": "https://github.com/prajapatimehul"
   },
   "homepage": "https://github.com/prajapatimehul/shopify-cowork",
   "repository": "https://github.com/prajapatimehul/shopify-cowork",
   "license": "MIT",
+  "keywords": [
+    "shopify",
+    "seo",
+    "ecommerce",
+    "audit",
+    "geo",
+    "aeo",
+    "cro",
+    "mcp"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Shopify Cowork",
     "shortDescription": "Audit and fix Shopify stores from public data and the Admin API.",
     "longDescription": "Shopify Cowork bundles two agent skills. store-analyzer runs a public-data audit across 8 modules: Trust, CRO, Page Speed, Technical SEO, Product-Page SEO, Structured Data, AEO, and GEO. store-fixer applies safe, reviewable fixes to product, collection, and theme data through the Shopify Admin GraphQL API, with explicit approval before every write and a rollback manifest for every change.",
+    "defaultPrompt": [
+      "Audit this Shopify store: example.com",
+      "Check if this store is visible to ChatGPT and Perplexity.",
+      "Fix the issues from this audit on my store."
+    ],
     "developerName": "Mehul Prajapati",
     "category": "Commerce",
     "capabilities": [
@@ -21,7 +37,6 @@
       "Write"
     ],
     "websiteURL": "https://github.com/prajapatimehul/shopify-cowork",
-    "privacyPolicyURL": "https://github.com/prajapatimehul/shopify-cowork#privacy",
-    "termsOfServiceURL": "https://github.com/prajapatimehul/shopify-cowork#license"
+    "brandColor": "#96BF48"
   }
 }
