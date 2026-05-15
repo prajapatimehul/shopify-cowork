@@ -8,7 +8,7 @@ Audit and fix Shopify stores, bundled as a plugin for **Claude Code** and **Code
 
 ```
 /plugin marketplace add prajapatimehul/shopify-cowork
-/plugin install shopify-cowork@shopify-cowork
+/plugin install shopify-cowork@shopify-cowork-marketplace
 ```
 
 ### Codex

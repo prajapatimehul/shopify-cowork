@@ -8,7 +8,7 @@ Agent skills, plugin, and MCP server for auditing and fixing Shopify stores. Wor
 
 ```
 /plugin marketplace add prajapatimehul/shopify-cowork
-/plugin install shopify-cowork@shopify-cowork
+/plugin install shopify-cowork@shopify-cowork-marketplace
 ```
 
 ### Codex
