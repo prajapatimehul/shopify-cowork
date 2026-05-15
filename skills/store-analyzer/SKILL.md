@@ -269,6 +269,32 @@ Result: Focused audit on Structured Data module — Product/Offer schema, mercha
 **Example 6**: `Implement the fixes from this audit`
 Result: Hand off to `store-fixer`. Do not execute changes from `store-analyzer`.
 
+## Writing Replies & Outreach From Audit Results
+
+When the user asks to draft a community reply, DM, or outreach message based on an audit:
+
+### Rules
+1. **Facts only, no unsourced advice.** State findings with exact numbers. Do not prescribe fixes unless citing Google Search Central, Google Merchant Center, or Shopify docs.
+2. **No AI/SEO jargon.** Never use: "long-tail ranking", "structured data", "SERP presentation", "conversion gaps", "unlock". Write like a human who looked at the store.
+3. **Frame as buyer perspective.** "A buyer can't find what phones fit" not "Your meta description is missing."
+4. **Never prescribe word counts.** Don't say "write 300 words." Say what information is missing.
+5. **Open with a genuine compliment.** Find one real thing done well.
+6. **AI visibility = one-liner, not the lead.** Most store owners don't think about AI yet.
+7. **End with an offer, not a pitch.** "I have the full report if useful" — not a tool pitch.
+
+### Template
+```
+Hey — [genuine compliment about one thing done well]. I ran an automated audit on your store and a few things stood out:
+
+- **[Finding 1 as fact]** — [buyer-perspective impact in plain English]
+- **[Finding 2 as fact]** — [plain English]
+- **[Finding 3 as fact]** — [plain English]
+
+I also tested whether AI assistants (ChatGPT, Perplexity) could answer basic questions about [product] — [one-line summary of gaps].
+
+I have the full report if you'd find it useful. Happy to share.
+```
+
 ## When Not To Use This Skill
 
 - The site is not a Shopify storefront.
